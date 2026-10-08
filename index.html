@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#121212">
+<title>Position Size Calculator</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="mobile-web-app-capable" content="yes">
+<style>
+:root{--bg:#121212;--field:#2A2A2A;--gold:#D4AF37;--gold-d:#a8891f;--text:#f2f2f2;--mute:#8d8d8d;--card:#1b1b1b;--red:#e5736b;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:520px;margin:0 auto;padding:20px 16px 48px}
+h1{font-size:1.5rem;margin:6px 0 2px;color:#fff}
+h2{font-size:1.15rem;margin:0;color:#fff}
+.sub{color:var(--mute);margin:0 0 20px;font-size:.95rem}
+.panel{background:var(--card);border-radius:16px;padding:18px;margin-bottom:18px}
+.field{margin-bottom:16px}
+label,.lbl{display:block;font-size:.85rem;color:var(--mute);margin-bottom:6px}
+input,select{width:100%;min-height:48px;background:var(--field);color:#fff;border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font:inherit;appearance:none;-webkit-appearance:none}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
+input::placeholder{color:#6b6b6b}
+input:focus,select:focus{outline:none;border-color:var(--gold)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--field);border-radius:12px;padding:4px;gap:4px}
+.seg button{min-height:42px;border:0;border-radius:9px;background:transparent;color:var(--mute);font:inherit;font-weight:600;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--gold);color:#121212}
+.seg button:focus-visible,.btn:focus-visible,.link:focus-visible{outline:2px solid #fff;outline-offset:2px}
+.hint{font-size:.78rem;color:var(--mute);margin-top:5px}
+.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:#121212;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer}
+.btn:active{background:var(--gold-d)}
+.err{color:var(--red);font-size:.9rem;margin:10px 0 0;min-height:1.2em}
+.result{background:linear-gradient(160deg,#e3c35a,var(--gold) 55%,#b8962b);color:#121212;border-radius:16px;padding:20px;margin-bottom:18px}
+.result h2{color:#121212;margin-bottom:12px}
+.big{font-size:2.3rem;font-weight:800;line-height:1.1}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
+.grid span{display:block;font-size:.78rem;opacity:.75}
+.grid b{font-size:1.05rem}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.link{background:none;border:0;color:var(--gold);font:inherit;font-weight:600;cursor:pointer;padding:8px 4px;min-height:40px}
+.link.del{color:var(--red)}
+.confirm{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
+.entry{background:var(--field);border-radius:12px;padding:14px;margin-bottom:10px}
+.entry .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.entry .name{font-weight:700;color:var(--gold)}
+.entry .when{font-size:.78rem;color:var(--mute)}
+.entry dl{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:10px 0 0}
+.entry dt{font-size:.74rem;color:var(--mute)}
+.entry dd{margin:0;font-weight:600}
+.empty{color:var(--mute);text-align:center;padding:14px 0 6px;margin:0}
+.note{font-size:.78rem;color:var(--mute)}
+</style>
+</head>
+<body>
+<main>
+<h1>Position Size Calculator</h1>
+<p class="sub">Know your lot size before you enter the trade.</p>
+
+<section class="panel" aria-label="Calculator">
+<div class="field"><label for="acc">Account currency</label>
+<select id="acc"><option>USD</option></select></div>
+
+<div class="field"><label for="inst">Instrument</label>
+<select id="inst">
+<option value="XAUUSD">XAUUSD (Gold)</option>
+<option value="EURUSD">EURUSD</option>
+<option value="GBPUSD">GBPUSD</option>
+<option value="AUDUSD">AUDUSD</option>
+<option value="BTCUSD">BTCUSD</option>
+</select>
+<div class="hint" id="pipHint"></div></div>
+
+<div class="field"><label for="bal">Account balance ($)</label>
+<input id="bal" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 10000"></div>
+
+<div class="field"><span class="lbl">Risk by</span>
+<div class="seg" role="group" aria-label="Risk type">
+<button type="button" id="mPct" aria-pressed="true">Percent (%)</button>
+<button type="button" id="mAmt" aria-pressed="false">Amount ($)</button>
+</div></div>
+
+<div class="field"><label for="risk" id="riskLbl">Risk percent (%)</label>
+<input id="risk" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1"></div>
+
+<div class="field"><label for="sl">Stop loss (pips)</label>
+<input id="sl" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 30"></div>
+
+<div class="field"><label for="tp">Take profit (pips, optional)</label>
+<input id="tp" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 60"></div>
+
+<button class="btn" id="calc" type="button">Calculate</button>
+<p class="err" id="err" role="alert"></p>
+</section>
+
+<section class="result" id="res" aria-live="polite" hidden>
+<h2>Result</h2>
+<div class="big" id="rLots">0.00</div><span style="font-size:.85rem;opacity:.75">standard lots</span>
+<div class="grid">
+<div><span>Risk amount</span><b id="rRisk"></b></div>
+<div><span id="rUnitsLbl">Units</span><b id="rUnits"></b></div>
+<div><span>Mini lots</span><b id="rMini"></b></div>
+<div><span>Micro lots</span><b id="rMicro"></b></div>
+<div><span>Pip value per lot</span><b id="rPv"></b></div>
+<div id="rrBox" hidden><span>Risk:Reward</span><b id="rRR"></b></div>
+<div id="ppBox" hidden><span>Potential profit</span><b id="rPP"></b></div>
+</div>
+</section>
+
+<section class="panel" aria-label="Trade journal">
+<div class="head"><h2>Trade journal</h2>
+<div id="clearWrap"></div></div>
+<div id="list"></div>
+<p class="note" id="storeNote"></p>
+</section>
+</main>
+
+<script>
+(function(){
+var SPEC={
+ XAUUSD:{pip:0.10,pv:10,contract:100,unit:"oz"},
+ EURUSD:{pip:0.0001,pv:10,contract:100000,unit:"units"},
+ GBPUSD:{pip:0.0001,pv:10,contract:100000,unit:"units"},
+ AUDUSD:{pip:0.0001,pv:10,contract:100000,unit:"units"},
+ BTCUSD:{pip:1,pv:1,contract:1,unit:"BTC"}
+};
+var KEY="fx-calc-journal-v1";
+var $=function(i){return document.getElementById(i)};
+var mode="pct",entries=[],memOnly=false,confirming=false;
+
+function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){memOnly=true}}
+
+function n(v,d){return Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
+function usd(v){return "$"+n(v,2)}
+function setMode(m){
+ mode=m;
+ $("mPct").setAttribute("aria-pressed",m==="pct");
+ $("mAmt").setAttribute("aria-pressed",m==="amt");
+ $("riskLbl").textContent=m==="pct"?"Risk percent (%)":"Risk amount ($)";
+ $("risk").placeholder=m==="pct"?"e.g. 1":"e.g. 100";
+ $("risk").value="";
+}
+function hint(){
+ var s=SPEC[$("inst").value];
+ $("pipHint").textContent="1 pip = "+s.pip+" price move";
+}
+function calculate(){
+ var inst=$("inst").value,s=SPEC[inst];
+ var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),sl=parseFloat($("sl").value),tp=parseFloat($("tp").value);
+ var err=$("err");err.textContent="";
+ var risk=mode==="pct"?bal*rv/100:rv;
+ if(mode==="pct"&&!(bal>0)){err.textContent="Enter your account balance.";return}
+ if(!(rv>0)){err.textContent=mode==="pct"?"Enter a risk percent above 0.":"Enter a risk amount above 0.";return}
+ if(mode==="amt"&&bal>0&&risk>bal){err.textContent="Risk amount can't be more than your balance.";return}
+ if(!(sl>0)){err.textContent="Enter a stop loss in pips above 0.";return}
+ var lots=risk/(sl*s.pv);
+ var units=lots*s.contract;
+ var hasTp=tp>0;
+ var rr=hasTp?tp/sl:null;
+ var profit=hasTp?lots*tp*s.pv:null;
+ var ud=inst==="BTCUSD"?4:(inst==="XAUUSD"?2:0);
+
+ $("rLots").textContent=n(lots,2);
+ $("rRisk").textContent=usd(risk);
+ $("rUnitsLbl").textContent="Units ("+s.unit+")";
+ $("rUnits").textContent=n(units,ud);
+ $("rMini").textContent=n(lots*10,2);
+ $("rMicro").textContent=n(lots*100,1);
+ $("rPv").textContent=usd(s.pv);
+ $("rrBox").hidden=!hasTp;$("ppBox").hidden=!hasTp;
+ if(hasTp){$("rRR").textContent="1 : "+n(rr,2);$("rPP").textContent=usd(profit)}
+ $("res").hidden=false;
+ $("res").scrollIntoView({behavior:"smooth",block:"nearest"});
+
+ entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),inst:inst,ts:Date.now(),lots:lots,risk:risk,sl:sl,tp:hasTp?tp:null,rr:rr,profit:profit});
+ save();render();
+}
+function render(){
+ var list=$("list");list.innerHTML="";
+ var cw=$("clearWrap");cw.innerHTML="";
+ if(!entries.length){
+  var p=document.createElement("p");p.className="empty";p.textContent="No saved calculations yet. Each one you run is saved here.";list.appendChild(p);
+ } else {
+  if(confirming){
+   var box=document.createElement("div");box.className="confirm";
+   var t=document.createElement("span");t.className="note";t.textContent="Delete all entries?";
+   var y=document.createElement("button");y.className="link del";y.textContent="Yes, clear";y.onclick=function(){entries=[];confirming=false;save();render()};
+   var c=document.createElement("button");c.className="link";c.textContent="Cancel";c.onclick=function(){confirming=false;render()};
+   box.appendChild(t);box.appendChild(y);box.appendChild(c);cw.appendChild(box);
+  } else {
+   var b=document.createElement("button");b.className="link del";b.textContent="Clear all";b.onclick=function(){confirming=true;render()};cw.appendChild(b);
+  }
+  entries.forEach(function(e){
+   var d=new Date(e.ts);
+   var el=document.createElement("div");el.className="entry";
+   var top=document.createElement("div");top.className="top";
+   var left=document.createElement("div");
+   var nm=document.createElement("div");nm.className="name";nm.textContent=e.inst;
+   var wh=document.createElement("div");wh.className="when";wh.textContent=d.toLocaleDateString()+" "+d.toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});
+   left.appendChild(nm);left.appendChild(wh);
+   var del=document.createElement("button");del.className="link del";del.textContent="Delete";del.setAttribute("aria-label","Delete "+e.inst+" entry");
+   del.onclick=function(){entries=entries.filter(function(x){return x.id!==e.id});save();render()};
+   top.appendChild(left);top.appendChild(del);
+   var dl=document.createElement("dl");
+   function row(k,v){var w=document.createElement("div");var dt=document.createElement("dt");dt.textContent=k;var dd=document.createElement("dd");dd.textContent=v;w.appendChild(dt);w.appendChild(dd);dl.appendChild(w)}
+   row("Lot size",n(e.lots,2));
+   row("Risk amount",usd(e.risk));
+   row("Stop loss",n(e.sl,1)+" pips");
+   row("Take profit",e.tp?n(e.tp,1)+" pips":"–");
+   row("Risk:Reward",e.rr?"1 : "+n(e.rr,2):"–");
+   row("Potential profit",e.profit!=null?usd(e.profit):"–");
+   el.appendChild(top);el.appendChild(dl);list.appendChild(el);
+  });
+ }
+ $("storeNote").textContent=memOnly?"Saving isn't available in this browser, so entries last only until you close the page.":"Saved on this device. Works offline.";
+}
+$("mPct").onclick=function(){setMode("pct")};
+$("mAmt").onclick=function(){setMode("amt")};
+$("inst").onchange=hint;
+$("calc").onclick=calculate;
+document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT")calculate()});
+load();hint();render();
+if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
+})();
+</script>
+</body>
+  </html>
