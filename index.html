@@ -84,12 +84,6 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </div>
 <div class="hint" id="pipHint" style="margin:-8px 0 16px"></div>
 
-<div class="field"><span class="lbl">Direction</span>
-<div class="seg" role="group" aria-label="Trade direction">
-<button type="button" id="dBuy" aria-pressed="true">Buy</button>
-<button type="button" id="dSell" aria-pressed="false">Sell</button>
-</div></div>
-
 <div class="field"><label for="bal">Account balance ($)</label>
 <input id="bal" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 10000"></div>
 
@@ -102,15 +96,16 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 <div class="field"><label for="risk" id="riskLbl">Risk percent (%)</label>
 <input id="risk" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1"></div>
 
-<div class="field"><label for="entry">Entry price (optional)</label>
+<div class="field"><label for="entry">Entry price</label>
 <input id="entry" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2650.50"></div>
 
 <div class="two field">
-<div><label for="sl">Stop loss (pips)</label>
-<input id="sl" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 30"></div>
-<div><label for="tp">Take profit (pips)</label>
+<div><label for="sl">Stop loss price</label>
+<input id="sl" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2647.50"></div>
+<div><label for="tp">Take profit price</label>
 <input id="tp" type="number" inputmode="decimal" min="0" step="any" placeholder="optional"></div>
 </div>
+<div class="hint" style="margin:-8px 0 16px">Buy or sell is worked out for you: a stop loss below your entry is a buy, above is a sell.</div>
 
 <button class="btn" id="calc" type="button">Calculate</button>
 <p class="err" id="err" role="alert"></p>
@@ -125,8 +120,9 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 <div><span>Mini lots</span><b id="rMini"></b></div>
 <div><span>Micro lots</span><b id="rMicro"></b></div>
 <div><span>Pip value per lot</span><b id="rPv"></b></div>
-<div id="slBox" hidden><span>Stop loss price</span><b id="rSL"></b></div>
-<div id="tpBox" hidden><span>Take profit price</span><b id="rTP"></b></div>
+<div><span>Direction</span><b id="rDir"></b></div>
+<div><span>Stop loss distance</span><b id="rSL"></b></div>
+<div id="tpBox" hidden><span>Take profit distance</span><b id="rTP"></b></div>
 <div id="rrBox" hidden><span>Risk:Reward</span><b id="rRR"></b></div>
 <div id="ppBox" hidden><span>Potential profit</span><b id="rPP"></b></div>
 </div>
@@ -152,7 +148,7 @@ var SPEC={
 var MOODS=["Calm","Confident","Anxious","Greedy","FOMO","Revenge","Bored"];
 var KEY="fx-calc-journal-v1";
 var $=function(i){return document.getElementById(i)};
-var mode="pct",side="buy",entries=[],memOnly=false,confirming=false;
+var mode="pct",entries=[],memOnly=false,confirming=false;
 
 function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
@@ -168,11 +164,6 @@ function setMode(m){
  $("risk").placeholder=m==="pct"?"e.g. 1":"e.g. 100";
  $("risk").value="";
 }
-function setSide(s){
- side=s;
- $("dBuy").setAttribute("aria-pressed",s==="buy");
- $("dSell").setAttribute("aria-pressed",s==="sell");
-}
 function hint(){
  var s=SPEC[$("inst").value];
  $("pipHint").textContent="1 pip = "+s.pip+" price move";
@@ -185,22 +176,27 @@ function plOf(e){
 }
 function calculate(){
  var inst=$("inst").value,s=SPEC[inst];
- var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),sl=parseFloat($("sl").value),tp=parseFloat($("tp").value),en=parseFloat($("entry").value);
+ var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),en=parseFloat($("entry").value),slP=parseFloat($("sl").value),tpP=parseFloat($("tp").value);
  var err=$("err");err.textContent="";
  var risk=mode==="pct"?bal*rv/100:rv;
  if(mode==="pct"&&!(bal>0)){err.textContent="Enter your account balance.";return}
  if(!(rv>0)){err.textContent=mode==="pct"?"Enter a risk percent above 0.":"Enter a risk amount above 0.";return}
  if(mode==="amt"&&bal>0&&risk>bal){err.textContent="Risk amount can't be more than your balance.";return}
- if($("entry").value!==""&&!(en>0)){err.textContent="Entry price must be above 0, or leave it empty.";return}
- if(!(sl>0)){err.textContent="Enter a stop loss in pips above 0.";return}
+ if(!(en>0)){err.textContent="Enter your entry price.";return}
+ if(!(slP>0)){err.textContent="Enter your stop loss price.";return}
+ if(slP===en){err.textContent="Stop loss can't be the same as your entry price.";return}
+ var side=slP<en?"buy":"sell",dir=side==="buy"?1:-1;
+ var hasTp=$("tp").value!=="";
+ if(hasTp){
+  if(!(tpP>0)){err.textContent="Take profit price must be above 0, or leave it empty.";return}
+  if((tpP-en)*dir<=0){err.textContent="For a "+side+", take profit must be "+(side==="buy"?"above":"below")+" your entry price.";return}
+ }
+ var sl=Math.abs(en-slP)/s.pip;
+ var tp=hasTp?Math.abs(tpP-en)/s.pip:null;
  var lots=risk/(sl*s.pv);
  var units=lots*s.contract;
- var hasTp=tp>0,hasEn=en>0;
  var rr=hasTp?tp/sl:null;
  var profit=hasTp?lots*tp*s.pv:null;
- var dir=side==="sell"?-1:1;
- var slP=hasEn?en-dir*sl*s.pip:null;
- var tpP=(hasEn&&hasTp)?en+dir*tp*s.pip:null;
  var ud=inst==="BTCUSD"?4:(inst==="XAUUSD"?2:0);
 
  $("rLots").textContent=n(lots,2);
@@ -210,15 +206,16 @@ function calculate(){
  $("rMini").textContent=n(lots*10,2);
  $("rMicro").textContent=n(lots*100,1);
  $("rPv").textContent=usd(s.pv);
- $("slBox").hidden=!hasEn;$("tpBox").hidden=!(hasEn&&hasTp);
- if(hasEn)$("rSL").textContent=n(slP,s.dec);
- if(hasEn&&hasTp)$("rTP").textContent=n(tpP,s.dec);
+ $("rDir").textContent=side.toUpperCase();
+ $("rSL").textContent=n(sl,1)+" pips";
+ $("tpBox").hidden=!hasTp;
+ if(hasTp)$("rTP").textContent=n(tp,1)+" pips";
  $("rrBox").hidden=!hasTp;$("ppBox").hidden=!hasTp;
  if(hasTp){$("rRR").textContent="1 : "+n(rr,2);$("rPP").textContent=usd(profit)}
  $("res").hidden=false;
  $("res").scrollIntoView({behavior:"smooth",block:"nearest"});
 
- entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),inst:inst,side:side,ts:Date.now(),lots:lots,risk:risk,sl:sl,tp:hasTp?tp:null,rr:rr,profit:profit,entry:hasEn?en:null,slPrice:slP,tpPrice:tpP,exit:null,mood:[],note:""});
+ entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),inst:inst,side:side,ts:Date.now(),lots:lots,risk:risk,sl:sl,tp:tp,rr:rr,profit:profit,entry:en,slPrice:slP,tpPrice:hasTp?tpP:null,exit:null,mood:[],note:""});
  save();render();
 }
 function renderEntry(e){
@@ -294,8 +291,6 @@ function render(){
 }
 $("mPct").onclick=function(){setMode("pct")};
 $("mAmt").onclick=function(){setMode("amt")};
-$("dBuy").onclick=function(){setSide("buy")};
-$("dSell").onclick=function(){setSide("sell")};
 $("inst").onchange=hint;
 $("calc").onclick=calculate;
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.closest("#calcPanel"))calculate()});
