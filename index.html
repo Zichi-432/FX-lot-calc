@@ -4,46 +4,62 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050506">
-<title>Position Size Calculator</title>
+<title>Trade Calculator</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="mobile-web-app-capable" content="yes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{--gold:#D4AF37;--text:#f4f4f5;--mute:#9a9ea6;--red:#e5736b;--green:#5fc98b;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 html{scroll-padding-top:env(safe-area-inset-top,0px);background:#050506}
 *{box-sizing:border-box}
-body{margin:0;min-height:100vh;color:var(--text);font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+[hidden]{display:none!important}
+body{margin:0;min-height:100vh;color:var(--text);font:15px/1.5 "Poppins",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
 background:radial-gradient(130% 55% at 50% -5%,#2d3037 0%,#16181c 42%,#060607 100%) no-repeat,#050506}
 main{max-width:520px;margin:0 auto;padding:20px 16px 48px}
-h1{font-size:1.5rem;margin:6px 0 2px;color:#fff;text-shadow:0 1px 0 rgba(212,175,55,.35)}
-h2{font-size:1.15rem;margin:0;color:#fff}
-.sub{color:var(--mute);margin:0 0 20px;font-size:.95rem}
+h1{font:700 1.8rem/1.2 "Playfair Display",Georgia,"Times New Roman",serif;margin:6px 0 2px;background:linear-gradient(180deg,#f7e08a,#D4AF37 55%,#a88220);-webkit-background-clip:text;background-clip:text;color:transparent;letter-spacing:.3px}
+h2{font:600 1.15rem/1.3 "Playfair Display",Georgia,serif;margin:0;color:#fff}
+.sub{color:var(--mute);margin:0 0 18px;font-size:.88rem}
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:linear-gradient(180deg,#1a1c20,#0b0c0e);border:1px solid rgba(212,175,55,.28);border-radius:16px;padding:5px;margin-bottom:16px;box-shadow:inset 0 2px 6px rgba(0,0,0,.6)}
+.tabs button{min-height:54px;border:0;border-radius:12px;background:transparent;color:var(--mute);font:inherit;font-size:.76rem;font-weight:600;line-height:1.2;padding:6px 4px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37 55%,#b58f24);color:#121212;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 3px 10px rgba(212,175,55,.25)}
 .panel{background:linear-gradient(155deg,#272a30 0%,#17191d 55%,#0e0f12 100%);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 28px rgba(0,0,0,.55)}
 .field{margin-bottom:16px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.fields>div{margin-bottom:16px}
+.fields .full{grid-column:1/-1}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-label,.lbl{display:block;font-size:.85rem;color:var(--mute);margin-bottom:6px}
+label,.lbl{display:block;font-size:.8rem;color:var(--mute);margin-bottom:6px}
 input,select,textarea{width:100%;min-height:48px;color:#fff;background:linear-gradient(180deg,#363940,#26282d);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;font:inherit;appearance:none;-webkit-appearance:none;box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
 textarea{min-height:70px;resize:vertical}
 select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%),linear-gradient(180deg,#363940,#26282d);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px,0 0;background-size:6px 6px,6px 6px,100% 100%;background-repeat:no-repeat;padding-right:36px}
+select option,select optgroup{background:#1b1d21;color:#f4f4f5}
+select optgroup{color:#D4AF37}
+html{color-scheme:dark}
 input::placeholder,textarea::placeholder{color:#7b7f87}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:inset 0 2px 5px rgba(0,0,0,.4),0 0 0 3px rgba(212,175,55,.22)}
 .seg{display:grid;grid-template-columns:1fr 1fr;background:#0f1013;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:4px;gap:4px;box-shadow:inset 0 2px 5px rgba(0,0,0,.5)}
 .seg button{min-height:42px;border:0;border-radius:9px;background:transparent;color:var(--mute);font:inherit;font-weight:600;cursor:pointer}
-.seg button[aria-pressed="true"]{background:linear-gradient(180deg,#f3d877,#D4AF37 55%,#b58f24);color:#121212;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
+.seg button[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37 55%,#b58f24);color:#121212;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
 button:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.hint{font-size:.78rem;color:var(--mute);margin-top:5px}
-.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:linear-gradient(180deg,#f3d877 0%,#D4AF37 48%,#b58f24 100%);color:#121212;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 16px rgba(212,175,55,.25)}
+.hint{font-size:.75rem;color:var(--mute);margin-top:5px}
+.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:linear-gradient(180deg,#f7e08a 0%,#D4AF37 48%,#b58f24 100%);color:#121212;font:inherit;font-size:1rem;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 16px rgba(212,175,55,.25)}
 .btn:active{filter:brightness(.92)}
 .btn[disabled]{opacity:.7;cursor:default}
-.err{color:var(--red);font-size:.9rem;margin:10px 0 0;min-height:1.2em}
+.err{color:var(--red);font-size:.88rem;margin:10px 0 0;min-height:1.2em}
 .result{background:linear-gradient(160deg,#f4da7c,#D4AF37 52%,#b8962b);color:#121212;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px rgba(0,0,0,.55)}
-.result h2{color:#121212;margin-bottom:12px}
-.big{font-size:2.3rem;font-weight:800;line-height:1.1}
+.result h2{color:#121212;margin-bottom:10px}
+.big{font-size:2.3rem;font-weight:700;line-height:1.1;font-variant-numeric:tabular-nums}
+.big.pos{color:#0b5d2a}.big.neg{color:#8a1717}
+.rsub{font-size:.85rem;opacity:.75}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
-.grid span{display:block;font-size:.78rem;opacity:.75}
-.grid b{font-size:1.05rem}
-.resnote{font-size:.85rem;margin-top:12px;font-weight:600}
+.grid.one{grid-template-columns:1fr;margin-top:6px}
+.grid span{display:block;font-size:.76rem;opacity:.75}
+.grid b{font-size:1rem;font-variant-numeric:tabular-nums}
+.resnote{font-size:.82rem;margin-top:12px;font-weight:600}
 .logbox{margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
 .logbox label{color:rgba(0,0,0,.65)}
 .logbox input,.logbox select{background:#141518;color:#fff;margin-bottom:12px}
@@ -58,26 +74,33 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .entry .name{font-weight:700;color:var(--gold)}
 .side{margin-left:8px;font-size:.7rem;padding:2px 7px;border-radius:6px;background:#0f1013;color:#fff;vertical-align:middle}
 .side.buy{color:var(--green)}.side.sell{color:var(--red)}
-.entry .when{font-size:.78rem;color:var(--mute)}
+.entry .when{font-size:.76rem;color:var(--mute)}
 .entry dl{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:10px 0 0}
-.entry dt{font-size:.74rem;color:var(--mute)}
-.entry dd{margin:0;font-weight:600}
+.entry dt{font-size:.72rem;color:var(--mute)}
+.entry dd{margin:0;font-weight:600;font-size:.9rem}
 .sec{border-top:1px solid rgba(255,255,255,.1);margin-top:12px;padding-top:12px}
 .entry input,.entry textarea,.entry select{background:#141518;margin-bottom:10px}
 .entry select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-color:#141518}
 .pl{font-weight:700;margin-top:-2px}
 .pl.pos{color:var(--green)}.pl.neg{color:var(--red)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.chip{min-height:36px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4d55;background:#141518;color:var(--text);font:inherit;font-size:.85rem;cursor:pointer}
-.chip[aria-pressed="true"]{background:linear-gradient(180deg,#f3d877,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
+.chip{min-height:36px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4d55;background:#141518;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
 .empty{color:var(--mute);text-align:center;padding:14px 0 6px;margin:0}
-.note{font-size:.78rem;color:var(--mute)}
+.note{font-size:.76rem;color:var(--mute)}
 </style>
 </head>
 <body>
 <main>
-<h1>Position Size Calculator</h1>
-<p class="sub">Know your lot size, then journal how the trade went.</p>
+<h1>Trade Calculator</h1>
+<p class="sub">Size it, target it, measure it, then journal it.</p>
+
+<div class="tabs" id="tabs" role="tablist" aria-label="Calculator type">
+<button type="button" role="tab" id="t_size" aria-selected="true">Position size</button>
+<button type="button" role="tab" id="t_pnl" aria-selected="false">P&amp;L</button>
+<button type="button" role="tab" id="t_amt" aria-selected="false">TP by amount</button>
+<button type="button" role="tab" id="t_rrr" aria-selected="false">TP by RRR</button>
+</div>
 
 <section class="panel" id="calcPanel" aria-label="Calculator">
 <div class="two field">
@@ -86,54 +109,72 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </div>
 <div class="hint" id="pipHint" style="margin:-8px 0 16px"></div>
 
-<div class="field"><label for="bal">Account balance ($)</label>
+<div class="field"><label for="contract">Contract size (units per 1.0 lot)</label>
+<input id="contract" type="number" inputmode="decimal" min="0" step="any"></div>
+
+<div class="fields">
+<div class="full" id="f_dir"><span class="lbl">Direction</span>
+<div class="seg" role="group" aria-label="Trade direction">
+<button type="button" id="dBuy" aria-pressed="true">Buy</button>
+<button type="button" id="dSell" aria-pressed="false">Sell</button>
+</div></div>
+
+<div class="full" id="f_bal"><label for="bal" id="balLbl">Account balance ($)</label>
 <input id="bal" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 10000"></div>
 
-<div class="field"><span class="lbl">Risk by</span>
+<div class="full" id="f_riskmode"><span class="lbl">Risk by</span>
 <div class="seg" role="group" aria-label="Risk type">
 <button type="button" id="mPct" aria-pressed="true">Percent (%)</button>
 <button type="button" id="mAmt" aria-pressed="false">Amount ($)</button>
 </div></div>
 
-<div class="field"><label for="risk" id="riskLbl">Risk percent (%)</label>
+<div class="full" id="f_risk"><label for="risk" id="riskLbl">Risk percent (%)</label>
 <input id="risk" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1"></div>
 
-<div class="field"><label for="entry">Entry price</label>
-<input id="entry" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2650.50"></div>
+<div id="f_lots"><label for="lots" id="lotsLbl">Lot size</label>
+<input id="lots" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 0.5"></div>
 
-<div class="two field">
-<div><label for="sl">Stop loss price</label>
-<input id="sl" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 2647.50"></div>
-<div><label for="tp">Take profit price</label>
+<div id="f_entry"><label for="entry">Entry price</label>
+<input id="entry" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1.0850"></div>
+
+<div id="f_exit"><label for="exit">Exit price</label>
+<input id="exit" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1.0890"></div>
+
+<div id="f_sl"><label for="sl">Stop loss price</label>
+<input id="sl" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 1.0820"></div>
+
+<div id="f_tp"><label for="tp">Take profit (optional)</label>
 <input id="tp" type="number" inputmode="decimal" min="0" step="any" placeholder="optional"></div>
+
+<div id="f_target"><label for="target">Target profit ($)</label>
+<input id="target" type="number" inputmode="decimal" min="0" step="any" placeholder="e.g. 200"></div>
+
+<div id="f_maxloss"><label for="maxloss">Max loss ($, optional)</label>
+<input id="maxloss" type="number" inputmode="decimal" min="0" step="any" placeholder="optional"></div>
+
+<div id="f_comm"><label for="comm">Commission ($/lot, round trip)</label>
+<input id="comm" type="number" inputmode="decimal" min="0" step="any" placeholder="0"></div>
+
+<div id="f_custom"><label for="custom">Custom ratio (1 : ?)</label>
+<input id="custom" type="number" inputmode="decimal" min="1" step="any" placeholder="e.g. 2.5"></div>
 </div>
-<div class="hint" style="margin:-8px 0 16px">Buy or sell is worked out for you: a stop loss below your entry is a buy, above is a sell.</div>
+
+<div class="hint" id="hintDir" style="margin:-6px 0 16px">Buy or sell is worked out for you: a stop loss below your entry is a buy, above is a sell.</div>
 
 <div class="field" id="rateBox" hidden><label for="rate" id="rateLbl">Rate</label>
 <input id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="">
-<div class="hint">This pair doesn't involve USD, so this rate is needed to work out the pip value in dollars.</div></div>
+<div class="hint">This pair doesn't involve USD, so this rate is needed to work out dollar amounts.</div></div>
 
 <button class="btn" id="calc" type="button">Calculate</button>
 <p class="err" id="err" role="alert"></p>
 </section>
 
 <section class="result" id="res" aria-live="polite" hidden>
-<h2>Result</h2>
-<div class="big" id="rLots">0.00</div><span style="font-size:.85rem;opacity:.75">standard lots (rounded down to 0.01)</span>
-<div class="grid">
-<div><span>Actual risk</span><b id="rRisk"></b></div>
-<div><span id="rUnitsLbl">Units</span><b id="rUnits"></b></div>
-<div><span>Mini lots</span><b id="rMini"></b></div>
-<div><span>Micro lots</span><b id="rMicro"></b></div>
-<div><span>Pip value per lot</span><b id="rPv"></b></div>
-<div><span>Direction</span><b id="rDir"></b></div>
-<div><span>Stop loss distance</span><b id="rSL"></b></div>
-<div id="tpBox" hidden><span>Take profit distance</span><b id="rTP"></b></div>
-<div id="rrBox" hidden><span>Risk:Reward</span><b id="rRR"></b></div>
-<div id="ppBox" hidden><span>Potential profit</span><b id="rPP"></b></div>
-</div>
+<h2 id="rTitle">Result</h2>
+<div class="big" id="rBig"></div><div class="rsub" id="rSub"></div>
+<div class="grid" id="rGrid"></div>
 <div class="resnote" id="rNote"></div>
-<div class="logbox">
+<div class="logbox" id="logBox">
 <label for="rSes">Session (optional)</label>
 <select id="rSes"></select>
 <label for="rReason">Reason for trade (optional)</label>
@@ -157,24 +198,32 @@ var GROUPS=[
  ["EUR crosses",["EURGBP","EURAUD","EURCAD","EURCHF","EURJPY","EURNZD"]],
  ["GBP crosses",["GBPJPY","GBPAUD","GBPCAD","GBPCHF","GBPNZD"]],
  ["Other crosses",["AUDJPY","AUDCAD","AUDCHF","AUDNZD","NZDJPY","NZDCAD","NZDCHF","CADJPY","CADCHF","CHFJPY"]],
- ["Gold and crypto",["XAUUSD","BTCUSD"]]
+ ["Gold, crypto and indices",["XAUUSD","BTCUSD","US500","NAS100","US30","JPN225","GER40","UK100"]]
 ];
 var CONV={EUR:["EURUSD",false,"1.08"],GBP:["GBPUSD",false,"1.27"],AUD:["AUDUSD",false,"0.66"],NZD:["NZDUSD",false,"0.60"],CAD:["USDCAD",true,"1.36"],CHF:["USDCHF",true,"0.90"],JPY:["USDJPY",true,"150.00"]};
 var SESSIONS=["Sydney","Asian (Tokyo)","London","New York","London-NY overlap","Other"];
 var MOODS=["Calm","Confident","Anxious","Greedy","FOMO","Revenge","Bored"];
 var KEY="fx-calc-journal-v1";
 var SPEC={
- XAUUSD:{pip:0.10,contract:100,unit:"oz",dec:2,mode:"fixed",pv:10},
- BTCUSD:{pip:1,contract:1,unit:"BTC",dec:2,mode:"fixed",pv:1}
+ XAUUSD:{pip:0.10,contract:100,unit:"oz",dec:2,mode:"fixed"},
+ BTCUSD:{pip:1,contract:1,unit:"BTC",dec:2,mode:"fixed"}
 };
+["US500","NAS100","US30","JPN225","GER40","UK100"].forEach(function(c){SPEC[c]={pip:1,contract:1,unit:"units",dec:1,mode:"fixed",index:true}});
 GROUPS.forEach(function(g){g[1].forEach(function(c){
  if(SPEC[c])return;
  var b=c.slice(0,3),q=c.slice(3),jpy=q==="JPY";
- SPEC[c]={base:b,quote:q,pip:jpy?0.01:0.0001,contract:100000,unit:"units",dec:jpy?3:5,mode:q==="USD"?"fixed":(b==="USD"?"entry":"cross"),pv:q==="USD"?10:null};
+ SPEC[c]={base:b,quote:q,pip:jpy?0.01:0.0001,contract:100000,unit:"units",dec:jpy?3:5,mode:q==="USD"?"fixed":(b==="USD"?"entry":"cross")};
 })});
+var VIS={
+ size:["f_bal","f_riskmode","f_risk","f_entry","f_sl","f_tp"],
+ pnl:["f_dir","f_bal","f_lots","f_entry","f_exit","f_tp","f_comm"],
+ amt:["f_dir","f_lots","f_entry","f_target","f_maxloss"],
+ rrr:["f_lots","f_entry","f_sl","f_custom"]
+};
+var ALLF=["f_dir","f_bal","f_riskmode","f_risk","f_lots","f_entry","f_exit","f_sl","f_tp","f_target","f_maxloss","f_comm","f_custom"];
 
 var $=function(i){return document.getElementById(i)};
-var mode="pct",entries=[],memOnly=false,confirming=false,last=null;
+var tab="size",mode="pct",dirSide="buy",entries=[],memOnly=false,confirming=false,last=null;
 
 function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
@@ -182,11 +231,13 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){m
 function n(v,d){return Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
 function usd(v){return "$"+n(v,2)}
 function money(v){return (v<0?"-$":"+$")+n(Math.abs(v),2)}
-function pvLot(s,en,rate){
- if(s.mode==="fixed")return s.pv;
- if(s.mode==="entry")return s.contract*s.pip/en;
- var c=CONV[s.quote];return s.contract*s.pip*(c[1]?1/rate:rate);
+function sg(v,d){return (v>=0?"+":"-")+n(Math.abs(v),d)}
+function qUSD(s,price,rate){
+ if(s.mode==="fixed")return 1;
+ if(s.mode==="entry")return 1/price;
+ var c=CONV[s.quote];return c[1]?1/rate:rate;
 }
+function round9(x){return Math.round(x*1e9)/1e9}
 function fillSessions(sel,val){
  sel.innerHTML="";
  var o=h("option",null,"Not set");o.value="";sel.appendChild(o);
@@ -203,82 +254,179 @@ function setMode(m){
  $("risk").value="";
  invalidate();
 }
+function setDir(d){
+ dirSide=d;
+ $("dBuy").setAttribute("aria-pressed",d==="buy");
+ $("dSell").setAttribute("aria-pressed",d==="sell");
+ invalidate();
+}
+function setTab(t){
+ tab=t;
+ ["size","pnl","amt","rrr"].forEach(function(k){$("t_"+k).setAttribute("aria-selected",k===t)});
+ var show=VIS[t];
+ ALLF.forEach(function(id){$(id).hidden=show.indexOf(id)<0});
+ $("balLbl").textContent=t==="pnl"?"Account balance ($, optional)":"Account balance ($)";
+ $("lotsLbl").textContent=t==="rrr"?"Lot size (optional)":"Lot size";
+ $("hintDir").hidden=!(t==="size"||t==="rrr");
+ $("err").textContent="";
+ invalidate();
+}
 function instChanged(){
  var code=$("inst").value,s=SPEC[code];
  var t;
  if(code==="XAUUSD")t="1 pip = 0.10 price move. Assumes 100 oz per lot. Contract sizes can differ by broker.";
  else if(code==="BTCUSD")t="1 pip = 1 price move. Assumes 1 BTC per lot. Contract sizes can differ by broker.";
+ else if(s.index)t="1 point = 1 pip. Assumes $1 per point per lot. Change the contract size to match your broker.";
  else t="1 pip = "+s.pip+" price move. 1 lot = 100,000 units.";
  $("pipHint").textContent=t;
+ $("contract").value=s.contract;
  var cross=s.mode==="cross";
  $("rateBox").hidden=!cross;
  if(cross){var c=CONV[s.quote];$("rateLbl").textContent="Current "+c[0]+" price";$("rate").placeholder="e.g. "+c[2]}
  invalidate();
 }
 function plOf(e){
- var s=SPEC[e.inst],pv=e.pv||(s&&s.pv);
- if(!s||!pv||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
+ var s=SPEC[e.inst];
+ if(!s||!e.pv||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
  var dir=e.side==="sell"?-1:1;
- return ((e.exit-e.entry)*dir/s.pip)*pv*e.lots;
+ return ((e.exit-e.entry)*dir/s.pip)*e.pv*e.lots;
 }
-function calculate(){
+function show(o){
+ $("rTitle").textContent=o.title;
+ var big=$("rBig");big.textContent=o.big||"";big.hidden=!o.big;big.className="big"+(o.cls?" "+o.cls:"");
+ var sb=$("rSub");sb.textContent=o.sub||"";sb.hidden=!o.sub;
+ var g=$("rGrid");g.innerHTML="";g.className="grid"+(o.one?" one":"");
+ o.rows.forEach(function(r){var d=h("div");d.appendChild(h("span",null,r[0]));d.appendChild(h("b",null,r[1]));g.appendChild(d)});
+ $("rNote").textContent=o.note||"";
+ $("logBox").hidden=!o.loggable;
+ var lb=$("logBtn");lb.disabled=false;lb.textContent="Log this trade";
+ $("res").hidden=false;
+ $("res").scrollIntoView({behavior:"smooth",block:"nearest"});
+}
+function base(){
  var inst=$("inst").value,s=SPEC[inst];
- var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),en=parseFloat($("entry").value),slP=parseFloat($("sl").value),tpP=parseFloat($("tp").value),rate=parseFloat($("rate").value);
- var err=$("err");err.textContent="";
+ var ct=parseFloat($("contract").value);if(!(ct>0))ct=s.contract;
+ return {inst:inst,s:s,ct:ct,rate:parseFloat($("rate").value)};
+}
+function fail(m){$("err").textContent=m;invalidate()}
+function rateMsg(s){return "Enter the current "+CONV[s.quote][0]+" price so dollar amounts can be worked out."}
+
+function calcSize(){
+ var b=base(),s=b.s;
+ var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),en=parseFloat($("entry").value),slP=parseFloat($("sl").value),tpP=parseFloat($("tp").value);
  var target=mode==="pct"?bal*rv/100:rv;
- function fail(m){err.textContent=m;invalidate()}
  if(mode==="pct"&&!(bal>0))return fail("Enter your account balance.");
  if(!(rv>0))return fail(mode==="pct"?"Enter a risk percent above 0.":"Enter a risk amount above 0.");
  if(mode==="amt"&&bal>0&&target>bal)return fail("Risk amount can't be more than your balance.");
  if(!(en>0))return fail("Enter your entry price.");
  if(!(slP>0))return fail("Enter your stop loss price.");
  if(slP===en)return fail("Stop loss can't be the same as your entry price.");
- if(s.mode==="cross"&&!(rate>0))return fail("Enter the current "+CONV[s.quote][0]+" price so the pip value can be worked out.");
+ if(s.mode==="cross"&&!(b.rate>0))return fail(rateMsg(s));
  var side=slP<en?"buy":"sell",dir=side==="buy"?1:-1;
  var hasTp=$("tp").value!=="";
  if(hasTp){
   if(!(tpP>0))return fail("Take profit price must be above 0, or leave it empty.");
   if((tpP-en)*dir<=0)return fail("For a "+side+", take profit must be "+(side==="buy"?"above":"below")+" your entry price.");
  }
- var pv=pvLot(s,en,rate);
+ var pv=round9(b.ct*s.pip*qUSD(s,en,b.rate));
  var sl=Math.round(Math.abs(en-slP)/s.pip*1e6)/1e6;
  var tp=hasTp?Math.round(Math.abs(tpP-en)/s.pip*1e6)/1e6:null;
  var raw=target/(sl*pv);
  var lots=Math.floor(raw*100+1e-9)/100;
- if(lots<0.01){
-  return fail("Below the minimum lot size (0.01). At 0.01 lots this trade would risk about "+usd(0.01*sl*pv)+". Raise your risk or tighten your stop.");
- }
+ if(lots<0.01)return fail("Below the minimum lot size (0.01). At 0.01 lots this trade would risk about "+usd(0.01*sl*pv)+". Raise your risk or tighten your stop.");
  var actual=lots*sl*pv;
  var rr=hasTp?tp/sl:null;
  var profit=hasTp?lots*tp*pv:null;
- var ud=s.unit==="BTC"?2:(s.unit==="oz"?0:0);
-
- $("rLots").textContent=n(lots,2);
- $("rRisk").textContent=usd(actual);
- $("rUnitsLbl").textContent="Units ("+s.unit+")";
- $("rUnits").textContent=n(lots*s.contract,ud);
- $("rMini").textContent=n(lots*10,1);
- $("rMicro").textContent=n(lots*100,0);
- $("rPv").textContent=usd(pv);
- $("rDir").textContent=side.toUpperCase();
- $("rSL").textContent=n(sl,1)+" pips";
- $("tpBox").hidden=!hasTp;
- if(hasTp)$("rTP").textContent=n(tp,1)+" pips";
- $("rrBox").hidden=!hasTp;$("ppBox").hidden=!hasTp;
- if(hasTp){$("rRR").textContent="1 : "+n(rr,2);$("rPP").textContent=usd(profit)}
+ var ud=s.unit==="BTC"?2:0;
+ var rows=[
+  ["Actual risk",usd(actual)],
+  ["Units ("+s.unit+")",n(lots*b.ct,ud)],
+  ["Mini lots",n(lots*10,1)],
+  ["Micro lots",n(lots*100,0)],
+  ["Pip value per lot",usd(pv)],
+  ["Direction",side.toUpperCase()],
+  ["Stop loss distance",n(sl,1)+" pips"]
+ ];
+ if(hasTp){rows.push(["Take profit distance",n(tp,1)+" pips"]);rows.push(["Risk:Reward","1 : "+n(rr,2)]);rows.push(["Potential profit",usd(profit)])}
  var note="";
  if(Math.abs(target-actual)>=0.005){
   note="You set "+usd(target)+". Lots are rounded down to 0.01, so your real risk is "+usd(actual);
   if(bal>0)note+=" ("+n(actual/bal*100,2)+"% of your balance)";
   note+=".";
  }
- $("rNote").textContent=note;
- var lb=$("logBtn");lb.disabled=false;lb.textContent="Log this trade";
- $("res").hidden=false;
- $("res").scrollIntoView({behavior:"smooth",block:"nearest"});
-
- last={inst:inst,side:side,lots:lots,risk:actual,target:target,sl:sl,tp:tp,rr:rr,profit:profit,entry:en,slPrice:slP,tpPrice:hasTp?tpP:null,pv:pv};
+ show({title:"Position size",big:n(lots,2),sub:"standard lots (rounded down to 0.01)",rows:rows,note:note,loggable:true});
+ last={inst:b.inst,side:side,lots:lots,risk:actual,target:target,sl:sl,tp:tp,rr:rr,profit:profit,entry:en,slPrice:slP,tpPrice:hasTp?tpP:null,pv:pv};
 }
+function calcPnl(){
+ var b=base(),s=b.s,dir=dirSide==="buy"?1:-1;
+ var lots=parseFloat($("lots").value),en=parseFloat($("entry").value),ex=parseFloat($("exit").value),tpP=parseFloat($("tp").value),bal=parseFloat($("bal").value);
+ var comm=$("comm").value===""?0:parseFloat($("comm").value);
+ if(!(lots>0))return fail("Enter your lot size.");
+ if(!(en>0))return fail("Enter your entry price.");
+ if(!(ex>0))return fail("Enter your exit price.");
+ if(!(comm>=0))return fail("Commission can't be negative.");
+ if(s.mode==="cross"&&!(b.rate>0))return fail(rateMsg(s));
+ var hasTp=$("tp").value!=="";
+ if(hasTp){
+  if(!(tpP>0))return fail("Take profit must be above 0, or leave it empty.");
+  if((tpP-en)*dir<=0)return fail("For a "+dirSide+", take profit must be "+(dirSide==="buy"?"above":"below")+" your entry price.");
+ }
+ var q=qUSD(s,ex,b.rate);
+ var diff=(ex-en)*dir,pips=diff/s.pip;
+ var gross=diff*b.ct*lots*q,commTot=comm*lots,net=gross-commTot;
+ var rows=[["Pips",sg(pips,1)],["Gross P&L",money(gross)],["Commission",commTot>0?"-"+usd(commTot):"$0.00"]];
+ if(bal>0)rows.push(["Account impact",sg(net/bal*100,2)+"%"]);
+ if(hasTp){
+  var tpDiff=(tpP-en)*dir,tpGross=tpDiff*b.ct*lots*q;
+  rows.push(["If take profit hit",money(tpGross-commTot)+" ("+sg(tpDiff/s.pip,1)+" pips)"]);
+ }
+ show({title:"Profit / Loss",big:money(net),cls:net>=0?"pos":"neg",sub:net>=0?"Net profit":"Net loss",rows:rows});
+}
+function calcAmt(){
+ var b=base(),s=b.s,dir=dirSide==="buy"?1:-1;
+ var lots=parseFloat($("lots").value),en=parseFloat($("entry").value),target=parseFloat($("target").value),hasMl=$("maxloss").value!=="",ml=parseFloat($("maxloss").value);
+ if(!(lots>0))return fail("Enter your lot size.");
+ if(!(en>0))return fail("Enter your entry price.");
+ if(!(target>0))return fail("Enter the profit you want to make.");
+ if(hasMl&&!(ml>0))return fail("Max loss must be above 0, or leave it empty.");
+ if(s.mode==="cross"&&!(b.rate>0))return fail(rateMsg(s));
+ var unitUSD=b.ct*lots*qUSD(s,en,b.rate);
+ var tpMove=target/unitUSD,tpPrice=en+dir*tpMove;
+ if(!(tpPrice>0))return fail("That target is too large for this entry price and lot size.");
+ var rows=[["Pips to take profit",n(tpMove/s.pip,1)+" pips"],["Target profit",usd(target)]];
+ if(hasMl){
+  var slMove=ml/unitUSD,slPrice=en-dir*slMove;
+  if(!(slPrice>0))return fail("That max loss is too large for this entry price and lot size.");
+  rows.push(["Stop loss price",n(slPrice,s.dec)]);
+  rows.push(["Pips to stop loss",n(slMove/s.pip,1)+" pips"]);
+  rows.push(["Max loss",usd(ml)]);
+  rows.push(["Risk:Reward","1 : "+n(target/ml,2)]);
+ }
+ show({title:"Take profit by amount",big:n(tpPrice,s.dec),sub:"Take profit price ("+dirSide.toUpperCase()+")",rows:rows});
+}
+function calcRrr(){
+ var b=base(),s=b.s;
+ var en=parseFloat($("entry").value),slP=parseFloat($("sl").value),hasLots=$("lots").value!=="",lots=parseFloat($("lots").value),hasCu=$("custom").value!=="",cu=parseFloat($("custom").value);
+ if(!(en>0))return fail("Enter your entry price.");
+ if(!(slP>0))return fail("Enter your stop loss price.");
+ if(slP===en)return fail("Stop loss can't be the same as your entry price.");
+ if(hasLots&&!(lots>0))return fail("Lot size must be above 0, or leave it empty.");
+ if(hasCu&&!(cu>=1))return fail("Custom ratio must be 1 or higher.");
+ if(hasLots&&s.mode==="cross"&&!(b.rate>0))return fail(rateMsg(s));
+ var side=slP<en?"buy":"sell",dir=side==="buy"?1:-1,d=Math.abs(en-slP);
+ var unitUSD=hasLots?b.ct*lots*qUSD(s,en,b.rate):0;
+ var ratios=[1,2,3];if(hasCu&&ratios.indexOf(cu)<0)ratios.push(cu);
+ var rows=[["Direction",side.toUpperCase()],["Risk distance",n(d/s.pip,1)+" pips"+(hasLots?" ("+usd(d*unitUSD)+")":"")]];
+ for(var i=0;i<ratios.length;i++){
+  var r=ratios[i],tp=en+dir*d*r;
+  if(!(tp>0))return fail("A 1 : "+n(r,2)+" target would fall below zero for this entry and stop.");
+  var txt=n(tp,s.dec)+"  (+"+n(d*r/s.pip,1)+" pips"+(hasLots?", +"+usd(d*r*unitUSD):"")+")";
+  rows.push(["1 : "+n(r,r%1?2:0),txt]);
+ }
+ show({title:"Take profit targets",rows:rows,one:true,note:"Targets are measured from your entry using your stop loss distance."});
+}
+function calculate(){({size:calcSize,pnl:calcPnl,amt:calcAmt,rrr:calcRrr})[tab]()}
+
 function logTrade(){
  if(!last)return;
  var e={};for(var k in last)e[k]=last[k];
@@ -388,7 +536,7 @@ function render(){
  var list=$("list");list.innerHTML="";
  var tools=$("tools");tools.innerHTML="";
  if(!entries.length){
-  list.appendChild(h("p","empty","Nothing logged yet. Calculate a trade, then tap Log this trade."));
+  list.appendChild(h("p","empty","Nothing logged yet. Use the Position size tab, then tap Log this trade."));
  } else {
   if(confirming){
    tools.appendChild(h("span","note","Delete all entries?"));
@@ -410,16 +558,19 @@ GROUPS.forEach(function(g){
  $("inst").appendChild(og);
 });
 fillSessions($("rSes"),"");
+["size","pnl","amt","rrr"].forEach(function(k){$("t_"+k).onclick=function(){setTab(k)}});
 $("mPct").onclick=function(){setMode("pct")};
 $("mAmt").onclick=function(){setMode("amt")};
+$("dBuy").onclick=function(){setDir("buy")};
+$("dSell").onclick=function(){setDir("sell")};
 $("inst").onchange=instChanged;
 $("calc").onclick=calculate;
 $("logBtn").onclick=logTrade;
 $("calcPanel").addEventListener("input",invalidate);
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.closest("#calcPanel"))calculate()});
-load();instChanged();render();
+load();instChanged();setTab("size");render();
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 })();
 </script>
 </body>
- </html>
+                              </html>
