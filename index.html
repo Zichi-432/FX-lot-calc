@@ -3,64 +3,73 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#121212">
+<meta name="theme-color" content="#050506">
 <title>Position Size Calculator</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="mobile-web-app-capable" content="yes">
 <style>
-:root{--bg:#121212;--field:#2A2A2A;--gold:#D4AF37;--gold-d:#a8891f;--text:#f2f2f2;--mute:#8d8d8d;--card:#1b1b1b;--red:#e5736b;--green:#5fc98b;
+:root{--gold:#D4AF37;--text:#f4f4f5;--mute:#9a9ea6;--red:#e5736b;--green:#5fc98b;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--bg)}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:#050506}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{margin:0;min-height:100vh;color:var(--text);font:16px/1.5 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+background:radial-gradient(130% 55% at 50% -5%,#2d3037 0%,#16181c 42%,#060607 100%) no-repeat,#050506}
 main{max-width:520px;margin:0 auto;padding:20px 16px 48px}
-h1{font-size:1.5rem;margin:6px 0 2px;color:#fff}
+h1{font-size:1.5rem;margin:6px 0 2px;color:#fff;text-shadow:0 1px 0 rgba(212,175,55,.35)}
 h2{font-size:1.15rem;margin:0;color:#fff}
 .sub{color:var(--mute);margin:0 0 20px;font-size:.95rem}
-.panel{background:var(--card);border-radius:16px;padding:18px;margin-bottom:18px}
+.panel{background:linear-gradient(155deg,#272a30 0%,#17191d 55%,#0e0f12 100%);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:18px;margin-bottom:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.1),0 10px 28px rgba(0,0,0,.55)}
 .field{margin-bottom:16px}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 label,.lbl{display:block;font-size:.85rem;color:var(--mute);margin-bottom:6px}
-input,select,textarea{width:100%;min-height:48px;background:var(--field);color:#fff;border:1.5px solid transparent;border-radius:12px;padding:12px 14px;font:inherit;appearance:none;-webkit-appearance:none}
+input,select,textarea{width:100%;min-height:48px;color:#fff;background:linear-gradient(180deg,#363940,#26282d);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:12px 14px;font:inherit;appearance:none;-webkit-appearance:none;box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
 textarea{min-height:70px;resize:vertical}
-select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px;background-repeat:no-repeat;padding-right:36px}
-input::placeholder,textarea::placeholder{color:#6b6b6b}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
-.seg{display:grid;grid-template-columns:1fr 1fr;background:var(--field);border-radius:12px;padding:4px;gap:4px}
+select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%),linear-gradient(180deg,#363940,#26282d);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px,0 0;background-size:6px 6px,6px 6px,100% 100%;background-repeat:no-repeat;padding-right:36px}
+input::placeholder,textarea::placeholder{color:#7b7f87}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold);box-shadow:inset 0 2px 5px rgba(0,0,0,.4),0 0 0 3px rgba(212,175,55,.22)}
+.seg{display:grid;grid-template-columns:1fr 1fr;background:#0f1013;border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:4px;gap:4px;box-shadow:inset 0 2px 5px rgba(0,0,0,.5)}
 .seg button{min-height:42px;border:0;border-radius:9px;background:transparent;color:var(--mute);font:inherit;font-weight:600;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--gold);color:#121212}
+.seg button[aria-pressed="true"]{background:linear-gradient(180deg,#f3d877,#D4AF37 55%,#b58f24);color:#121212;box-shadow:inset 0 1px 0 rgba(255,255,255,.5)}
 button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .hint{font-size:.78rem;color:var(--mute);margin-top:5px}
-.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:var(--gold);color:#121212;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer}
-.btn:active{background:var(--gold-d)}
+.btn{width:100%;min-height:52px;border:0;border-radius:12px;background:linear-gradient(180deg,#f3d877 0%,#D4AF37 48%,#b58f24 100%);color:#121212;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 6px 16px rgba(212,175,55,.25)}
+.btn:active{filter:brightness(.92)}
+.btn[disabled]{opacity:.7;cursor:default}
 .err{color:var(--red);font-size:.9rem;margin:10px 0 0;min-height:1.2em}
-.result{background:linear-gradient(160deg,#e3c35a,var(--gold) 55%,#b8962b);color:#121212;border-radius:16px;padding:20px;margin-bottom:18px}
+.result{background:linear-gradient(160deg,#f4da7c,#D4AF37 52%,#b8962b);color:#121212;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:inset 0 1px 0 rgba(255,255,255,.6),0 10px 28px rgba(0,0,0,.55)}
 .result h2{color:#121212;margin-bottom:12px}
 .big{font-size:2.3rem;font-weight:800;line-height:1.1}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px 14px;margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
 .grid span{display:block;font-size:.78rem;opacity:.75}
 .grid b{font-size:1.05rem}
-.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.resnote{font-size:.85rem;margin-top:12px;font-weight:600}
+.logbox{margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
+.logbox label{color:rgba(0,0,0,.65)}
+.logbox input,.logbox select{background:#141518;color:#fff;margin-bottom:12px}
+.logbox select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-color:#141518}
+.logbtn{background:linear-gradient(180deg,#26282d,#0d0e10);color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 12px rgba(0,0,0,.35)}
+.head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
+.tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .link{background:none;border:0;color:var(--gold);font:inherit;font-weight:600;cursor:pointer;padding:8px 4px;min-height:40px}
 .link.del{color:var(--red)}
-.confirm{display:flex;gap:8px;align-items:center;justify-content:flex-end;flex-wrap:wrap}
-.entry{background:var(--field);border-radius:12px;padding:14px;margin-bottom:12px}
+.entry{background:linear-gradient(155deg,#30333a,#1b1d21);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 6px 16px rgba(0,0,0,.4)}
 .entry .top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
 .entry .name{font-weight:700;color:var(--gold)}
-.side{margin-left:8px;font-size:.7rem;padding:2px 7px;border-radius:6px;background:#3a3a3a;color:#fff;vertical-align:middle}
+.side{margin-left:8px;font-size:.7rem;padding:2px 7px;border-radius:6px;background:#0f1013;color:#fff;vertical-align:middle}
 .side.buy{color:var(--green)}.side.sell{color:var(--red)}
 .entry .when{font-size:.78rem;color:var(--mute)}
 .entry dl{display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:10px 0 0}
 .entry dt{font-size:.74rem;color:var(--mute)}
 .entry dd{margin:0;font-weight:600}
-.sec{border-top:1px solid #3b3b3b;margin-top:12px;padding-top:12px}
-.entry input,.entry textarea{background:#1b1b1b}
-.pl{font-weight:700;margin-top:6px}
+.sec{border-top:1px solid rgba(255,255,255,.1);margin-top:12px;padding-top:12px}
+.entry input,.entry textarea,.entry select{background:#141518;margin-bottom:10px}
+.entry select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-color:#141518}
+.pl{font-weight:700;margin-top:-2px}
 .pl.pos{color:var(--green)}.pl.neg{color:var(--red)}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{min-height:36px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4a4a;background:transparent;color:var(--text);font:inherit;font-size:.85rem;cursor:pointer}
-.chip[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);color:#121212;font-weight:600}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+.chip{min-height:36px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4d55;background:#141518;color:var(--text);font:inherit;font-size:.85rem;cursor:pointer}
+.chip[aria-pressed="true"]{background:linear-gradient(180deg,#f3d877,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
 .empty{color:var(--mute);text-align:center;padding:14px 0 6px;margin:0}
 .note{font-size:.78rem;color:var(--mute)}
 </style>
@@ -73,14 +82,7 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 <section class="panel" id="calcPanel" aria-label="Calculator">
 <div class="two field">
 <div><label for="acc">Account currency</label><select id="acc"><option>USD</option></select></div>
-<div><label for="inst">Instrument</label>
-<select id="inst">
-<option value="XAUUSD">XAUUSD</option>
-<option value="EURUSD">EURUSD</option>
-<option value="GBPUSD">GBPUSD</option>
-<option value="AUDUSD">AUDUSD</option>
-<option value="BTCUSD">BTCUSD</option>
-</select></div>
+<div><label for="inst">Instrument</label><select id="inst"></select></div>
 </div>
 <div class="hint" id="pipHint" style="margin:-8px 0 16px"></div>
 
@@ -107,15 +109,19 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </div>
 <div class="hint" style="margin:-8px 0 16px">Buy or sell is worked out for you: a stop loss below your entry is a buy, above is a sell.</div>
 
+<div class="field" id="rateBox" hidden><label for="rate" id="rateLbl">Rate</label>
+<input id="rate" type="number" inputmode="decimal" min="0" step="any" placeholder="">
+<div class="hint">This pair doesn't involve USD, so this rate is needed to work out the pip value in dollars.</div></div>
+
 <button class="btn" id="calc" type="button">Calculate</button>
 <p class="err" id="err" role="alert"></p>
 </section>
 
 <section class="result" id="res" aria-live="polite" hidden>
 <h2>Result</h2>
-<div class="big" id="rLots">0.00</div><span style="font-size:.85rem;opacity:.75">standard lots</span>
+<div class="big" id="rLots">0.00</div><span style="font-size:.85rem;opacity:.75">standard lots (rounded down to 0.01)</span>
 <div class="grid">
-<div><span>Risk amount</span><b id="rRisk"></b></div>
+<div><span>Actual risk</span><b id="rRisk"></b></div>
 <div><span id="rUnitsLbl">Units</span><b id="rUnits"></b></div>
 <div><span>Mini lots</span><b id="rMini"></b></div>
 <div><span>Micro lots</span><b id="rMicro"></b></div>
@@ -126,11 +132,19 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 <div id="rrBox" hidden><span>Risk:Reward</span><b id="rRR"></b></div>
 <div id="ppBox" hidden><span>Potential profit</span><b id="rPP"></b></div>
 </div>
+<div class="resnote" id="rNote"></div>
+<div class="logbox">
+<label for="rSes">Session (optional)</label>
+<select id="rSes"></select>
+<label for="rReason">Reason for trade (optional)</label>
+<input id="rReason" type="text" placeholder="e.g. Break and retest of resistance">
+<button class="btn logbtn" id="logBtn" type="button">Log this trade</button>
+</div>
 </section>
 
 <section class="panel" aria-label="Trade journal">
 <div class="head"><h2>Trade journal</h2>
-<div id="clearWrap"></div></div>
+<div class="tools" id="tools"></div></div>
 <div id="list"></div>
 <p class="note" id="storeNote"></p>
 </section>
@@ -138,17 +152,29 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 
 <script>
 (function(){
-var SPEC={
- XAUUSD:{pip:0.10,pv:10,contract:100,unit:"oz",dec:2},
- EURUSD:{pip:0.0001,pv:10,contract:100000,unit:"units",dec:5},
- GBPUSD:{pip:0.0001,pv:10,contract:100000,unit:"units",dec:5},
- AUDUSD:{pip:0.0001,pv:10,contract:100000,unit:"units",dec:5},
- BTCUSD:{pip:1,pv:1,contract:1,unit:"BTC",dec:2}
-};
+var GROUPS=[
+ ["USD pairs",["EURUSD","GBPUSD","AUDUSD","NZDUSD","USDJPY","USDCAD","USDCHF"]],
+ ["EUR crosses",["EURGBP","EURAUD","EURCAD","EURCHF","EURJPY","EURNZD"]],
+ ["GBP crosses",["GBPJPY","GBPAUD","GBPCAD","GBPCHF","GBPNZD"]],
+ ["Other crosses",["AUDJPY","AUDCAD","AUDCHF","AUDNZD","NZDJPY","NZDCAD","NZDCHF","CADJPY","CADCHF","CHFJPY"]],
+ ["Gold and crypto",["XAUUSD","BTCUSD"]]
+];
+var CONV={EUR:["EURUSD",false,"1.08"],GBP:["GBPUSD",false,"1.27"],AUD:["AUDUSD",false,"0.66"],NZD:["NZDUSD",false,"0.60"],CAD:["USDCAD",true,"1.36"],CHF:["USDCHF",true,"0.90"],JPY:["USDJPY",true,"150.00"]};
+var SESSIONS=["Sydney","Asian (Tokyo)","London","New York","London-NY overlap","Other"];
 var MOODS=["Calm","Confident","Anxious","Greedy","FOMO","Revenge","Bored"];
 var KEY="fx-calc-journal-v1";
+var SPEC={
+ XAUUSD:{pip:0.10,contract:100,unit:"oz",dec:2,mode:"fixed",pv:10},
+ BTCUSD:{pip:1,contract:1,unit:"BTC",dec:2,mode:"fixed",pv:1}
+};
+GROUPS.forEach(function(g){g[1].forEach(function(c){
+ if(SPEC[c])return;
+ var b=c.slice(0,3),q=c.slice(3),jpy=q==="JPY";
+ SPEC[c]={base:b,quote:q,pip:jpy?0.01:0.0001,contract:100000,unit:"units",dec:jpy?3:5,mode:q==="USD"?"fixed":(b==="USD"?"entry":"cross"),pv:q==="USD"?10:null};
+})});
+
 var $=function(i){return document.getElementById(i)};
-var mode="pct",entries=[],memOnly=false,confirming=false;
+var mode="pct",entries=[],memOnly=false,confirming=false,last=null;
 
 function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
@@ -156,6 +182,18 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(entries))}catch(e){m
 function n(v,d){return Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d})}
 function usd(v){return "$"+n(v,2)}
 function money(v){return (v<0?"-$":"+$")+n(Math.abs(v),2)}
+function pvLot(s,en,rate){
+ if(s.mode==="fixed")return s.pv;
+ if(s.mode==="entry")return s.contract*s.pip/en;
+ var c=CONV[s.quote];return s.contract*s.pip*(c[1]?1/rate:rate);
+}
+function fillSessions(sel,val){
+ sel.innerHTML="";
+ var o=h("option",null,"Not set");o.value="";sel.appendChild(o);
+ SESSIONS.forEach(function(x){var p=h("option",null,x);p.value=x;sel.appendChild(p)});
+ sel.value=val||"";
+}
+function invalidate(){last=null;$("res").hidden=true}
 function setMode(m){
  mode=m;
  $("mPct").setAttribute("aria-pressed",m==="pct");
@@ -163,60 +201,124 @@ function setMode(m){
  $("riskLbl").textContent=m==="pct"?"Risk percent (%)":"Risk amount ($)";
  $("risk").placeholder=m==="pct"?"e.g. 1":"e.g. 100";
  $("risk").value="";
+ invalidate();
 }
-function hint(){
- var s=SPEC[$("inst").value];
- $("pipHint").textContent="1 pip = "+s.pip+" price move";
+function instChanged(){
+ var code=$("inst").value,s=SPEC[code];
+ var t;
+ if(code==="XAUUSD")t="1 pip = 0.10 price move. Assumes 100 oz per lot. Contract sizes can differ by broker.";
+ else if(code==="BTCUSD")t="1 pip = 1 price move. Assumes 1 BTC per lot. Contract sizes can differ by broker.";
+ else t="1 pip = "+s.pip+" price move. 1 lot = 100,000 units.";
+ $("pipHint").textContent=t;
+ var cross=s.mode==="cross";
+ $("rateBox").hidden=!cross;
+ if(cross){var c=CONV[s.quote];$("rateLbl").textContent="Current "+c[0]+" price";$("rate").placeholder="e.g. "+c[2]}
+ invalidate();
 }
 function plOf(e){
- var s=SPEC[e.inst];
- if(!s||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
+ var s=SPEC[e.inst],pv=e.pv||(s&&s.pv);
+ if(!s||!pv||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
  var dir=e.side==="sell"?-1:1;
- return ((e.exit-e.entry)*dir/s.pip)*s.pv*e.lots;
+ return ((e.exit-e.entry)*dir/s.pip)*pv*e.lots;
 }
 function calculate(){
  var inst=$("inst").value,s=SPEC[inst];
- var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),en=parseFloat($("entry").value),slP=parseFloat($("sl").value),tpP=parseFloat($("tp").value);
+ var bal=parseFloat($("bal").value),rv=parseFloat($("risk").value),en=parseFloat($("entry").value),slP=parseFloat($("sl").value),tpP=parseFloat($("tp").value),rate=parseFloat($("rate").value);
  var err=$("err");err.textContent="";
- var risk=mode==="pct"?bal*rv/100:rv;
- if(mode==="pct"&&!(bal>0)){err.textContent="Enter your account balance.";return}
- if(!(rv>0)){err.textContent=mode==="pct"?"Enter a risk percent above 0.":"Enter a risk amount above 0.";return}
- if(mode==="amt"&&bal>0&&risk>bal){err.textContent="Risk amount can't be more than your balance.";return}
- if(!(en>0)){err.textContent="Enter your entry price.";return}
- if(!(slP>0)){err.textContent="Enter your stop loss price.";return}
- if(slP===en){err.textContent="Stop loss can't be the same as your entry price.";return}
+ var target=mode==="pct"?bal*rv/100:rv;
+ function fail(m){err.textContent=m;invalidate()}
+ if(mode==="pct"&&!(bal>0))return fail("Enter your account balance.");
+ if(!(rv>0))return fail(mode==="pct"?"Enter a risk percent above 0.":"Enter a risk amount above 0.");
+ if(mode==="amt"&&bal>0&&target>bal)return fail("Risk amount can't be more than your balance.");
+ if(!(en>0))return fail("Enter your entry price.");
+ if(!(slP>0))return fail("Enter your stop loss price.");
+ if(slP===en)return fail("Stop loss can't be the same as your entry price.");
+ if(s.mode==="cross"&&!(rate>0))return fail("Enter the current "+CONV[s.quote][0]+" price so the pip value can be worked out.");
  var side=slP<en?"buy":"sell",dir=side==="buy"?1:-1;
  var hasTp=$("tp").value!=="";
  if(hasTp){
-  if(!(tpP>0)){err.textContent="Take profit price must be above 0, or leave it empty.";return}
-  if((tpP-en)*dir<=0){err.textContent="For a "+side+", take profit must be "+(side==="buy"?"above":"below")+" your entry price.";return}
+  if(!(tpP>0))return fail("Take profit price must be above 0, or leave it empty.");
+  if((tpP-en)*dir<=0)return fail("For a "+side+", take profit must be "+(side==="buy"?"above":"below")+" your entry price.");
  }
- var sl=Math.abs(en-slP)/s.pip;
- var tp=hasTp?Math.abs(tpP-en)/s.pip:null;
- var lots=risk/(sl*s.pv);
- var units=lots*s.contract;
+ var pv=pvLot(s,en,rate);
+ var sl=Math.round(Math.abs(en-slP)/s.pip*1e6)/1e6;
+ var tp=hasTp?Math.round(Math.abs(tpP-en)/s.pip*1e6)/1e6:null;
+ var raw=target/(sl*pv);
+ var lots=Math.floor(raw*100+1e-9)/100;
+ if(lots<0.01){
+  return fail("Below the minimum lot size (0.01). At 0.01 lots this trade would risk about "+usd(0.01*sl*pv)+". Raise your risk or tighten your stop.");
+ }
+ var actual=lots*sl*pv;
  var rr=hasTp?tp/sl:null;
- var profit=hasTp?lots*tp*s.pv:null;
- var ud=inst==="BTCUSD"?4:(inst==="XAUUSD"?2:0);
+ var profit=hasTp?lots*tp*pv:null;
+ var ud=s.unit==="BTC"?2:(s.unit==="oz"?0:0);
 
  $("rLots").textContent=n(lots,2);
- $("rRisk").textContent=usd(risk);
+ $("rRisk").textContent=usd(actual);
  $("rUnitsLbl").textContent="Units ("+s.unit+")";
- $("rUnits").textContent=n(units,ud);
- $("rMini").textContent=n(lots*10,2);
- $("rMicro").textContent=n(lots*100,1);
- $("rPv").textContent=usd(s.pv);
+ $("rUnits").textContent=n(lots*s.contract,ud);
+ $("rMini").textContent=n(lots*10,1);
+ $("rMicro").textContent=n(lots*100,0);
+ $("rPv").textContent=usd(pv);
  $("rDir").textContent=side.toUpperCase();
  $("rSL").textContent=n(sl,1)+" pips";
  $("tpBox").hidden=!hasTp;
  if(hasTp)$("rTP").textContent=n(tp,1)+" pips";
  $("rrBox").hidden=!hasTp;$("ppBox").hidden=!hasTp;
  if(hasTp){$("rRR").textContent="1 : "+n(rr,2);$("rPP").textContent=usd(profit)}
+ var note="";
+ if(Math.abs(target-actual)>=0.005){
+  note="You set "+usd(target)+". Lots are rounded down to 0.01, so your real risk is "+usd(actual);
+  if(bal>0)note+=" ("+n(actual/bal*100,2)+"% of your balance)";
+  note+=".";
+ }
+ $("rNote").textContent=note;
+ var lb=$("logBtn");lb.disabled=false;lb.textContent="Log this trade";
  $("res").hidden=false;
  $("res").scrollIntoView({behavior:"smooth",block:"nearest"});
 
- entries.unshift({id:Date.now()+"-"+Math.random().toString(36).slice(2,7),inst:inst,side:side,ts:Date.now(),lots:lots,risk:risk,sl:sl,tp:tp,rr:rr,profit:profit,entry:en,slPrice:slP,tpPrice:hasTp?tpP:null,exit:null,mood:[],note:""});
- save();render();
+ last={inst:inst,side:side,lots:lots,risk:actual,target:target,sl:sl,tp:tp,rr:rr,profit:profit,entry:en,slPrice:slP,tpPrice:hasTp?tpP:null,pv:pv};
+}
+function logTrade(){
+ if(!last)return;
+ var e={};for(var k in last)e[k]=last[k];
+ e.id=Date.now()+"-"+Math.random().toString(36).slice(2,7);
+ e.ts=Date.now();
+ e.session=$("rSes").value;
+ e.reason=$("rReason").value.trim();
+ e.exit=null;e.mood=[];e.note="";
+ entries.unshift(e);save();render();
+ var lb=$("logBtn");lb.disabled=true;lb.textContent="Logged \u2713 (see journal below)";
+ $("rReason").value="";
+}
+function csvCell(v,text){
+ if(v==null)return "";
+ v=String(v);
+ if(text&&/^[=+\-@\t\r]/.test(v))v="'"+v;
+ return '"'+v.replace(/"/g,'""')+'"';
+}
+function pad(x){return x<10?"0"+x:""+x}
+function exportCsv(){
+ if(!entries.length)return;
+ var head=["Date","Time","Instrument","Direction","Lots","Risk ($)","Entry","Stop loss","Take profit","Risk:Reward","Potential profit ($)","Exit","Result ($)","Session","Reason","Feelings","Notes"];
+ var rows=[head.map(function(x){return csvCell(x)}).join(",")];
+ entries.slice().reverse().forEach(function(e){
+  var d=new Date(e.ts),p=plOf(e);
+  var cells=[
+   [d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())],[pad(d.getHours())+":"+pad(d.getMinutes())],[e.inst],[e.side||""],
+   [e.lots!=null?e.lots.toFixed(2):""],[e.risk!=null?e.risk.toFixed(2):""],[e.entry],[e.slPrice],[e.tpPrice],
+   [e.rr?e.rr.toFixed(2):""],[e.profit!=null?e.profit.toFixed(2):""],[e.exit],[p!=null?p.toFixed(2):""],
+   [e.session,1],[e.reason,1],[(e.mood||[]).join("; "),1],[e.note,1]
+  ];
+  rows.push(cells.map(function(c){return csvCell(c[0],c[1])}).join(","));
+ });
+ var blob=new Blob(["\uFEFF"+rows.join("\r\n")],{type:"text/csv;charset=utf-8"});
+ var now=new Date();
+ var a=document.createElement("a");
+ a.href=URL.createObjectURL(blob);
+ a.download="trade-journal-"+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+".csv";
+ document.body.appendChild(a);a.click();
+ setTimeout(function(){try{document.body.removeChild(a);URL.revokeObjectURL(a.href)}catch(x){}},1500);
 }
 function renderEntry(e){
  var s=SPEC[e.inst]||SPEC.XAUUSD,d=s.dec;
@@ -235,12 +337,23 @@ function renderEntry(e){
  function row(k,v){var w=h("div");w.appendChild(h("dt",null,k));w.appendChild(h("dd",null,v));dl.appendChild(w)}
  row("Lot size",n(e.lots,2));
  row("Risk amount",usd(e.risk));
- row("Entry price",e.entry>0?n(e.entry,d):"–");
+ row("Entry price",e.entry>0?n(e.entry,d):"\u2013");
  row("Stop loss",(e.slPrice!=null?n(e.slPrice,d)+" ":"")+"("+n(e.sl,1)+" pips)");
- row("Take profit",e.tp?((e.tpPrice!=null?n(e.tpPrice,d)+" ":"")+"("+n(e.tp,1)+" pips)"):"–");
- row("Risk:Reward",e.rr?"1 : "+n(e.rr,2):"–");
- row("Potential profit",e.profit!=null?usd(e.profit):"–");
+ row("Take profit",e.tp?((e.tpPrice!=null?n(e.tpPrice,d)+" ":"")+"("+n(e.tp,1)+" pips)"):"\u2013");
+ row("Risk:Reward",e.rr?"1 : "+n(e.rr,2):"\u2013");
+ row("Potential profit",e.profit!=null?usd(e.profit):"\u2013");
  card.appendChild(dl);
+
+ var info=h("div","sec");
+ info.appendChild(h("label",null,"Session"));
+ var ss=h("select");fillSessions(ss,e.session);
+ ss.onchange=function(){e.session=ss.value;save()};
+ info.appendChild(ss);
+ info.appendChild(h("label",null,"Reason for trade"));
+ var rt=h("textarea");rt.placeholder="Why did you take this trade?";rt.value=e.reason||"";
+ rt.onchange=function(){e.reason=rt.value;save()};
+ info.appendChild(rt);
+ card.appendChild(info);
 
  var ex=h("div","sec");
  ex.appendChild(h("label",null,"Exit price"));
@@ -250,7 +363,7 @@ function renderEntry(e){
  ex.appendChild(xi);
  var p=plOf(e);
  if(p!=null)ex.appendChild(h("div","pl "+(p>=0?"pos":"neg"),"Result: "+money(p)));
- else if(e.exit!=null&&!(e.entry>0))ex.appendChild(h("div","note","Add an entry price when calculating to see the result."));
+ else if(e.exit!=null)ex.appendChild(h("div","note","Result can't be worked out for this older entry."));
  card.appendChild(ex);
 
  var fl=h("div","sec");
@@ -263,7 +376,8 @@ function renderEntry(e){
   chips.appendChild(c);
  });
  fl.appendChild(chips);
- var ta=h("textarea");ta.placeholder="Notes: why you took it, what you noticed...";ta.style.marginTop="10px";
+ fl.appendChild(h("label",null,"Notes"));
+ var ta=h("textarea");ta.placeholder="What you noticed, what you'd do differently...";
  ta.value=e.note||"";
  ta.onchange=function(){e.note=ta.value;save()};
  fl.appendChild(ta);
@@ -272,31 +386,40 @@ function renderEntry(e){
 }
 function render(){
  var list=$("list");list.innerHTML="";
- var cw=$("clearWrap");cw.innerHTML="";
+ var tools=$("tools");tools.innerHTML="";
  if(!entries.length){
-  list.appendChild(h("p","empty","No saved calculations yet. Each one you run is saved here."));
+  list.appendChild(h("p","empty","Nothing logged yet. Calculate a trade, then tap Log this trade."));
  } else {
   if(confirming){
-   var box=h("div","confirm");
-   box.appendChild(h("span","note","Delete all entries?"));
+   tools.appendChild(h("span","note","Delete all entries?"));
    var y=h("button","link del","Yes, clear");y.onclick=function(){entries=[];confirming=false;save();render()};
    var c=h("button","link","Cancel");c.onclick=function(){confirming=false;render()};
-   box.appendChild(y);box.appendChild(c);cw.appendChild(box);
+   tools.appendChild(y);tools.appendChild(c);
   } else {
-   var b=h("button","link del","Clear all");b.onclick=function(){confirming=true;render()};cw.appendChild(b);
+   var ex=h("button","link","Export CSV");ex.onclick=exportCsv;
+   var b=h("button","link del","Clear all");b.onclick=function(){confirming=true;render()};
+   tools.appendChild(ex);tools.appendChild(b);
   }
   entries.forEach(function(e){list.appendChild(renderEntry(e))});
  }
- $("storeNote").textContent=memOnly?"Saving isn't available in this browser, so entries last only until you close the page.":"Saved on this device. Works offline.";
+ $("storeNote").textContent=memOnly?"Saving isn't available in this browser, so entries last only until you close the page.":"Saved on this device. Works offline. Use Export CSV to keep a backup.";
 }
+GROUPS.forEach(function(g){
+ var og=h("optgroup");og.label=g[0];
+ g[1].forEach(function(c){var o=h("option",null,c);o.value=c;og.appendChild(o)});
+ $("inst").appendChild(og);
+});
+fillSessions($("rSes"),"");
 $("mPct").onclick=function(){setMode("pct")};
 $("mAmt").onclick=function(){setMode("amt")};
-$("inst").onchange=hint;
+$("inst").onchange=instChanged;
 $("calc").onclick=calculate;
+$("logBtn").onclick=logTrade;
+$("calcPanel").addEventListener("input",invalidate);
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.closest("#calcPanel"))calculate()});
-load();hint();render();
+load();instChanged();render();
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 })();
 </script>
 </body>
-</html>
+ </html>
