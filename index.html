@@ -62,8 +62,9 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .resnote{font-size:.82rem;margin-top:12px;font-weight:600}
 .logbox{margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
 .logbox label{color:rgba(0,0,0,.65)}
-.logbox input,.logbox select{background:#141518;color:#fff;margin-bottom:12px}
-.logbox select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-color:#141518}
+.logbox input{background:#141518}
+.logbox input,.logbox select{color:#fff;margin-bottom:12px}
+.logbox select{background-color:#141518;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
 .logbtn{background:linear-gradient(180deg,#26282d,#0d0e10);color:var(--gold);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 4px 12px rgba(0,0,0,.35)}
 .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;gap:8px}
 .tools{display:flex;gap:4px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
@@ -79,8 +80,9 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .entry dt{font-size:.72rem;color:var(--mute)}
 .entry dd{margin:0;font-weight:600;font-size:.9rem}
 .sec{border-top:1px solid rgba(255,255,255,.1);margin-top:12px;padding-top:12px}
-.entry input,.entry textarea,.entry select{background:#141518;margin-bottom:10px}
-.entry select{background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-color:#141518}
+.entry input,.entry textarea{background:#141518}
+.entry input,.entry textarea,.entry select{margin-bottom:10px}
+.entry select{background-color:#141518;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
 .pl{font-weight:700;margin-top:-2px}
 .pl.pos{color:var(--green)}.pl.neg{color:var(--red)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
@@ -88,6 +90,30 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .chip[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
 .empty{color:var(--mute);text-align:center;padding:14px 0 6px;margin:0}
 .note{font-size:.76rem;color:var(--mute)}
+.disclaimer{font-size:.72rem;color:var(--mute);text-align:center;margin:4px 8px 0}
+.selbtn{display:block;width:100%;text-align:left;min-height:56px;color:#fff;background-color:#26282d;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%),linear-gradient(180deg,#363940,#26282d);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%,0 0;background-size:6px 6px,6px 6px,100% 100%;background-repeat:no-repeat;border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:8px 40px 8px 14px;font:inherit;cursor:pointer;box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
+.selbtn:focus-visible{outline:none;border-color:var(--gold);box-shadow:inset 0 2px 5px rgba(0,0,0,.4),0 0 0 3px rgba(212,175,55,.22)}
+.selbtn .sym{display:block;font-weight:600;line-height:1.3}
+.selbtn .nm{display:block;font-size:.76rem;color:var(--mute);line-height:1.2}
+.sheet{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheetbg{position:absolute;inset:0;background:rgba(0,0,0,.7)}
+.sheetpanel{position:relative;width:100%;max-width:520px;height:85vh;height:85dvh;display:flex;flex-direction:column;background:#000;border-top:1px solid rgba(212,175,55,.55);border-radius:20px 20px 0 0;padding:10px 16px calc(12px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 30px rgba(0,0,0,.6)}
+.grab{width:44px;height:4px;border-radius:2px;background:#3a3c42;margin:0 auto 12px}
+.sheethead{display:flex;gap:8px;align-items:center}
+.sheethead input{background:#14151a;flex:1}
+.cats{display:flex;gap:8px;overflow-x:auto;padding:12px 0 10px;white-space:nowrap;-webkit-overflow-scrolling:touch}
+.cat{flex:0 0 auto;min-height:36px;padding:4px 14px;border-radius:18px;border:1.5px solid #34363c;background:#0b0c0e;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
+.cat[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
+.sheetlist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.irow{display:flex;align-items:center;border-bottom:1px solid #17181c}
+.imain{flex:1;min-width:0;display:flex;align-items:center;gap:12px;text-align:left;background:none;border:0;color:#fff;padding:10px 4px;min-height:60px;font:inherit;cursor:pointer}
+.inum{flex:0 0 30px;text-align:right;color:#8a7220;font-weight:600;font-size:.85rem;font-variant-numeric:tabular-nums}
+.itxt{min-width:0}
+.itxt b{display:block;font-weight:600;line-height:1.3}
+.itxt span{display:block;font-size:.78rem;color:var(--mute);line-height:1.25}
+.imain.on .itxt b{color:var(--gold)}
+.istar{flex:0 0 auto;min-width:52px;min-height:52px;background:none;border:0;font-size:1.5rem;color:#5c5f66;cursor:pointer}
+.istar[aria-pressed="true"]{color:var(--gold)}
 </style>
 </head>
 <body>
@@ -103,14 +129,16 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </div>
 
 <section class="panel" id="calcPanel" aria-label="Calculator">
+<div class="field"><span class="lbl" id="instLbl">Instrument</span>
+<button type="button" class="selbtn" id="instBtn" aria-haspopup="dialog" aria-labelledby="instLbl instSym"><span class="sym" id="instSym">EURUSD</span><span class="nm" id="instName"></span></button>
+<input type="hidden" id="inst" value="EURUSD">
+<div class="hint" id="pipHint"></div></div>
+
 <div class="two field">
 <div><label for="acc">Account currency</label><select id="acc"><option>USD</option></select></div>
-<div><label for="inst">Instrument</label><select id="inst"></select></div>
-</div>
-<div class="hint" id="pipHint" style="margin:-8px 0 16px"></div>
-
-<div class="field"><label for="contract">Contract size (units per 1.0 lot)</label>
+<div><label for="contract">Contract size (per 1.0 lot)</label>
 <input id="contract" type="number" inputmode="decimal" min="0" step="any"></div>
+</div>
 
 <div class="fields">
 <div class="full" id="f_dir"><span class="lbl">Direction</span>
@@ -183,12 +211,23 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </div>
 </section>
 
+<div class="sheet" id="sheet" hidden role="dialog" aria-modal="true" aria-label="Choose instrument">
+<div class="sheetbg" id="sheetBg"></div>
+<div class="sheetpanel">
+<div class="grab"></div>
+<div class="sheethead"><input id="q" type="text" placeholder="Search symbol or name" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Search instruments"><button type="button" class="link" id="sheetClose">Close</button></div>
+<div class="cats" id="cats"></div>
+<div class="sheetlist" id="sheetList"></div>
+</div>
+</div>
+
 <section class="panel" aria-label="Trade journal">
 <div class="head"><h2>Trade journal</h2>
 <div class="tools" id="tools"></div></div>
 <div id="list"></div>
 <p class="note" id="storeNote"></p>
 </section>
+<p class="disclaimer">This is a calculation tool, not financial advice. You are responsible for your own trading decisions and risk.</p>
 </main>
 
 <script>
@@ -203,6 +242,7 @@ var GROUPS=[
 var CONV={EUR:["EURUSD",false,"1.08"],GBP:["GBPUSD",false,"1.27"],AUD:["AUDUSD",false,"0.66"],NZD:["NZDUSD",false,"0.60"],CAD:["USDCAD",true,"1.36"],CHF:["USDCHF",true,"0.90"],JPY:["USDJPY",true,"150.00"]};
 var SESSIONS=["Sydney","Asian (Tokyo)","London","New York","London-NY overlap","Other"];
 var MOODS=["Calm","Confident","Anxious","Greedy","FOMO","Revenge","Bored"];
+var MOODS_POST=["Calm","Satisfied","Relieved","Disappointed","Frustrated","Regretful","Angry","Confident"];
 var KEY="fx-calc-journal-v1";
 var SPEC={
  XAUUSD:{pip:0.10,contract:100,unit:"oz",dec:2,mode:"fixed"},
@@ -214,6 +254,26 @@ GROUPS.forEach(function(g){g[1].forEach(function(c){
  var b=c.slice(0,3),q=c.slice(3),jpy=q==="JPY";
  SPEC[c]={base:b,quote:q,pip:jpy?0.01:0.0001,contract:100000,unit:"units",dec:jpy?3:5,mode:q==="USD"?"fixed":(b==="USD"?"entry":"cross")};
 })});
+var CUR={EUR:"Euro",USD:"United States Dollar",GBP:"British Pound",AUD:"Australian Dollar",NZD:"New Zealand Dollar",JPY:"Japanese Yen",CAD:"Canadian Dollar",CHF:"Swiss Franc"};
+var EXTRA={
+ XAUUSD:["Gold / United States Dollar","gold xau metal"],
+ BTCUSD:["Bitcoin / United States Dollar","bitcoin btc crypto"],
+ US500:["S&P 500","spx sp500 s&p"],
+ NAS100:["Nasdaq 100","nas nasdaq ndx"],
+ US30:["Dow Jones 30","dow dji wall street"],
+ JPN225:["Nikkei 225","nikkei nk225 japan"],
+ GER40:["DAX 40","dax germany"],
+ UK100:["FTSE 100","ftse uk"]
+};
+var CATDEF={majors:GROUPS[0][1],minors:GROUPS[1][1].concat(GROUPS[2][1],GROUPS[3][1]),idx:["US500","NAS100","US30","JPN225","GER40","UK100"],gc:["XAUUSD","BTCUSD"]};
+var TABS=[["all","All"],["fav","\u2605 Favourites"],["majors","Majors"],["minors","Minors"],["idx","Indices"],["gc","Gold & crypto"]];
+var ALL=[];
+GROUPS.forEach(function(g){g[1].forEach(function(c){
+ var nm,al="";
+ if(EXTRA[c]){nm=EXTRA[c][0];al=EXTRA[c][1]}else nm=CUR[c.slice(0,3)]+" / "+CUR[c.slice(3)];
+ ALL.push({code:c,name:nm,alias:al});
+})});
+function catOf(c){for(var k in CATDEF){if(CATDEF[k].indexOf(c)>-1)return k}return "all"}
 var VIS={
  size:["f_bal","f_riskmode","f_risk","f_entry","f_sl","f_tp"],
  pnl:["f_dir","f_bal","f_lots","f_entry","f_exit","f_tp","f_comm"],
@@ -223,7 +283,7 @@ var VIS={
 var ALLF=["f_dir","f_bal","f_riskmode","f_risk","f_lots","f_entry","f_exit","f_sl","f_tp","f_target","f_maxloss","f_comm","f_custom"];
 
 var $=function(i){return document.getElementById(i)};
-var tab="size",mode="pct",dirSide="buy",entries=[],memOnly=false,confirming=false,last=null;
+var tab="size",mode="pct",dirSide="buy",entries=[],memOnly=false,confirming=false,last=null,catSel="all",favs=[],FKEY="fx-calc-favs-v1";
 
 function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
@@ -237,7 +297,6 @@ function qUSD(s,price,rate){
  if(s.mode==="entry")return 1/price;
  var c=CONV[s.quote];return c[1]?1/rate:rate;
 }
-function round9(x){return Math.round(x*1e9)/1e9}
 function fillSessions(sel,val){
  sel.innerHTML="";
  var o=h("option",null,"Not set");o.value="";sel.appendChild(o);
@@ -271,6 +330,65 @@ function setTab(t){
  $("err").textContent="";
  invalidate();
 }
+function loadFavs(){try{var r=localStorage.getItem(FKEY);favs=r?JSON.parse(r):[];if(!Array.isArray(favs))favs=[]}catch(e){favs=[]}}
+function saveFavs(){try{localStorage.setItem(FKEY,JSON.stringify(favs))}catch(e){}}
+function infoOf(code){for(var i=0;i<ALL.length;i++){if(ALL[i].code===code)return ALL[i]}return ALL[0]}
+function updateBtn(){var it=infoOf($("inst").value);$("instSym").textContent=it.code;$("instName").textContent=it.name}
+function visibleList(){
+ var terms=$("q").value.toLowerCase().replace(/\//g," ").split(/\s+/).filter(Boolean);
+ var out=ALL.filter(function(it){
+  if(catSel==="fav"){if(favs.indexOf(it.code)<0)return false}
+  else if(catSel!=="all"&&catOf(it.code)!==catSel)return false;
+  var hay=(it.code+" "+it.name+" "+it.alias).toLowerCase().replace(/\//g," ");
+  return terms.every(function(t){return hay.indexOf(t)>-1});
+ });
+ var f=out.filter(function(it){return favs.indexOf(it.code)>-1});
+ var r=out.filter(function(it){return favs.indexOf(it.code)<0});
+ return f.concat(r);
+}
+function renderSheet(){
+ var cats=$("cats");cats.innerHTML="";
+ TABS.forEach(function(t){
+  var b=h("button","cat",t[1]);b.type="button";b.setAttribute("aria-pressed",t[0]===catSel);
+  b.onclick=function(){catSel=t[0];renderSheet()};
+  cats.appendChild(b);
+ });
+ var list=$("sheetList"),keep=list.scrollTop;list.innerHTML="";
+ var items=visibleList();
+ if(!items.length){
+  list.appendChild(h("p","empty",catSel==="fav"&&!$("q").value?"No favourites yet. Tap the star next to an instrument to pin it.":"No match. Try another name."));
+  return;
+ }
+ items.forEach(function(it,i){
+  var row=h("div","irow");
+  var main=h("button","imain"+(it.code===$("inst").value?" on":""));main.type="button";
+  main.appendChild(h("span","inum",String(i+1)));
+  var tx=h("div","itxt");tx.appendChild(h("b",null,it.code));tx.appendChild(h("span",null,it.name));
+  main.appendChild(tx);
+  main.onclick=function(){chooseInst(it.code)};
+  var isFav=favs.indexOf(it.code)>-1;
+  var st=h("button","istar",isFav?"\u2605":"\u2606");st.type="button";st.setAttribute("aria-pressed",isFav);
+  st.setAttribute("aria-label",(isFav?"Remove ":"Pin ")+it.code+(isFav?" from favourites":" to favourites"));
+  st.onclick=function(){
+   var k=favs.indexOf(it.code);if(k>-1)favs.splice(k,1);else favs.push(it.code);
+   saveFavs();renderSheet();
+  };
+  row.appendChild(main);row.appendChild(st);list.appendChild(row);
+ });
+ list.scrollTop=keep;
+}
+function openSheet(){
+ $("q").value="";catSel="all";
+ $("sheet").hidden=false;
+ document.body.style.overflow="hidden";
+ $("sheetList").scrollTop=0;
+ renderSheet();
+}
+function closeSheet(){$("sheet").hidden=true;document.body.style.overflow=""}
+function chooseInst(code){
+ $("inst").value=code;
+ updateBtn();closeSheet();instChanged();
+}
 function instChanged(){
  var code=$("inst").value,s=SPEC[code];
  var t;
@@ -285,11 +403,19 @@ function instChanged(){
  if(cross){var c=CONV[s.quote];$("rateLbl").textContent="Current "+c[0]+" price";$("rate").placeholder="e.g. "+c[2]}
  invalidate();
 }
-function plOf(e){
+function pvOf(e){
+ if(e.pv)return e.pv;
  var s=SPEC[e.inst];
- if(!s||!e.pv||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
+ if(!s)return null;
+ if(s.mode==="fixed")return s.contract*s.pip;
+ if(s.mode==="entry"&&e.entry>0)return s.contract*s.pip/e.entry;
+ return null;
+}
+function plOf(e){
+ var s=SPEC[e.inst],pv=pvOf(e);
+ if(!s||!pv||!(e.entry>0)||e.exit==null||!isFinite(e.exit))return null;
  var dir=e.side==="sell"?-1:1;
- return ((e.exit-e.entry)*dir/s.pip)*e.pv*e.lots;
+ return ((e.exit-e.entry)*dir/s.pip)*pv*e.lots;
 }
 function show(o){
  $("rTitle").textContent=o.title;
@@ -328,11 +454,11 @@ function calcSize(){
   if(!(tpP>0))return fail("Take profit price must be above 0, or leave it empty.");
   if((tpP-en)*dir<=0)return fail("For a "+side+", take profit must be "+(side==="buy"?"above":"below")+" your entry price.");
  }
- var pv=round9(b.ct*s.pip*qUSD(s,en,b.rate));
+ var pv=b.ct*s.pip*qUSD(s,en,b.rate);
  var sl=Math.round(Math.abs(en-slP)/s.pip*1e6)/1e6;
  var tp=hasTp?Math.round(Math.abs(tpP-en)/s.pip*1e6)/1e6:null;
  var raw=target/(sl*pv);
- var lots=Math.floor(raw*100+1e-9)/100;
+ var lots=Math.floor(raw*100+1e-7)/100;
  if(lots<0.01)return fail("Below the minimum lot size (0.01). At 0.01 lots this trade would risk about "+usd(0.01*sl*pv)+". Raise your risk or tighten your stop.");
  var actual=lots*sl*pv;
  var rr=hasTp?tp/sl:null;
@@ -448,7 +574,7 @@ function csvCell(v,text){
 function pad(x){return x<10?"0"+x:""+x}
 function exportCsv(){
  if(!entries.length)return;
- var head=["Date","Time","Instrument","Direction","Lots","Risk ($)","Entry","Stop loss","Take profit","Risk:Reward","Potential profit ($)","Exit","Result ($)","Session","Reason","Feelings","Notes"];
+ var head=["Date","Time","Instrument","Direction","Lots","Risk ($)","Entry","Stop loss","Take profit","Risk:Reward","Potential profit ($)","Exit","Result ($)","Session","Reason","Pre-trade emotion","Notes","Post-trade emotion"];
  var rows=[head.map(function(x){return csvCell(x)}).join(",")];
  entries.slice().reverse().forEach(function(e){
   var d=new Date(e.ts),p=plOf(e);
@@ -456,7 +582,7 @@ function exportCsv(){
    [d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())],[pad(d.getHours())+":"+pad(d.getMinutes())],[e.inst],[e.side||""],
    [e.lots!=null?e.lots.toFixed(2):""],[e.risk!=null?e.risk.toFixed(2):""],[e.entry],[e.slPrice],[e.tpPrice],
    [e.rr?e.rr.toFixed(2):""],[e.profit!=null?e.profit.toFixed(2):""],[e.exit],[p!=null?p.toFixed(2):""],
-   [e.session,1],[e.reason,1],[(e.mood||[]).join("; "),1],[e.note,1]
+   [e.session,1],[e.reason,1],[(e.mood||[]).join("; "),1],[e.note,1],[(e.moodPost||[]).join("; "),1]
   ];
   rows.push(cells.map(function(c){return csvCell(c[0],c[1])}).join(","));
  });
@@ -467,6 +593,16 @@ function exportCsv(){
  a.download="trade-journal-"+now.getFullYear()+"-"+pad(now.getMonth()+1)+"-"+pad(now.getDate())+".csv";
  document.body.appendChild(a);a.click();
  setTimeout(function(){try{document.body.removeChild(a);URL.revokeObjectURL(a.href)}catch(x){}},1500);
+}
+function chipRow(e,field,list){
+ if(!Array.isArray(e[field]))e[field]=[];
+ var chips=h("div","chips");
+ list.forEach(function(m){
+  var c=h("button","chip",m);c.type="button";c.setAttribute("aria-pressed",e[field].indexOf(m)>-1);
+  c.onclick=function(){var i=e[field].indexOf(m);if(i>-1)e[field].splice(i,1);else e[field].push(m);save();c.setAttribute("aria-pressed",e[field].indexOf(m)>-1)};
+  chips.appendChild(c);
+ });
+ return chips;
 }
 function renderEntry(e){
  var s=SPEC[e.inst]||SPEC.XAUUSD,d=s.dec;
@@ -515,21 +651,19 @@ function renderEntry(e){
  card.appendChild(ex);
 
  var fl=h("div","sec");
- fl.appendChild(h("div","lbl","How did you feel?"));
- var chips=h("div","chips");
- if(!Array.isArray(e.mood))e.mood=[];
- MOODS.forEach(function(m){
-  var c=h("button","chip",m);c.type="button";c.setAttribute("aria-pressed",e.mood.indexOf(m)>-1);
-  c.onclick=function(){var i=e.mood.indexOf(m);if(i>-1)e.mood.splice(i,1);else e.mood.push(m);save();c.setAttribute("aria-pressed",e.mood.indexOf(m)>-1)};
-  chips.appendChild(c);
- });
- fl.appendChild(chips);
+ fl.appendChild(h("div","lbl","Pre-Trade Emotion"));
+ fl.appendChild(chipRow(e,"mood",MOODS));
  fl.appendChild(h("label",null,"Notes"));
  var ta=h("textarea");ta.placeholder="What you noticed, what you'd do differently...";
  ta.value=e.note||"";
  ta.onchange=function(){e.note=ta.value;save()};
  fl.appendChild(ta);
  card.appendChild(fl);
+
+ var po=h("div","sec");
+ po.appendChild(h("div","lbl","Post-Trade Emotion"));
+ po.appendChild(chipRow(e,"moodPost",MOODS_POST));
+ card.appendChild(po);
  return card;
 }
 function render(){
@@ -552,25 +686,24 @@ function render(){
  }
  $("storeNote").textContent=memOnly?"Saving isn't available in this browser, so entries last only until you close the page.":"Saved on this device. Works offline. Use Export CSV to keep a backup.";
 }
-GROUPS.forEach(function(g){
- var og=h("optgroup");og.label=g[0];
- g[1].forEach(function(c){var o=h("option",null,c);o.value=c;og.appendChild(o)});
- $("inst").appendChild(og);
-});
 fillSessions($("rSes"),"");
 ["size","pnl","amt","rrr"].forEach(function(k){$("t_"+k).onclick=function(){setTab(k)}});
 $("mPct").onclick=function(){setMode("pct")};
 $("mAmt").onclick=function(){setMode("amt")};
 $("dBuy").onclick=function(){setDir("buy")};
 $("dSell").onclick=function(){setDir("sell")};
-$("inst").onchange=instChanged;
+$("instBtn").onclick=openSheet;
+$("sheetBg").onclick=closeSheet;
+$("sheetClose").onclick=closeSheet;
+$("q").addEventListener("input",renderSheet);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!$("sheet").hidden)closeSheet()});
 $("calc").onclick=calculate;
 $("logBtn").onclick=logTrade;
 $("calcPanel").addEventListener("input",invalidate);
 document.addEventListener("keydown",function(e){if(e.key==="Enter"&&e.target.tagName==="INPUT"&&e.target.closest("#calcPanel"))calculate()});
-load();instChanged();setTab("size");render();
+load();loadFavs();updateBtn();instChanged();setTab("size");render();
 if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})})}
 })();
 </script>
 </body>
-                              </html>
+ </html>
