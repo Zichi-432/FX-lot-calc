@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#050506">
-<title>Trade Calculator</title>
+<title>Pipframe</title>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <meta name="mobile-web-app-capable" content="yes">
@@ -61,7 +61,9 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .grid b{font-size:1rem;font-variant-numeric:tabular-nums}
 .resnote{font-size:.82rem;margin-top:12px;font-weight:600}
 .logbox{margin-top:14px;border-top:1px solid rgba(0,0,0,.25);padding-top:14px}
-.logbox label{color:rgba(0,0,0,.65)}
+.logbox label,.logbox .lbl{color:rgba(0,0,0,.65)}
+.logbox .chip{background:rgba(0,0,0,.08);color:#121212;border-color:rgba(0,0,0,.4)}
+.logbox .chip[aria-pressed="true"]{background:#141518;color:var(--gold);border-color:#141518}
 .logbox input{background:#141518}
 .logbox input,.logbox select{color:#fff;margin-bottom:12px}
 .logbox select{background-color:#141518;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);background-position:calc(100% - 20px) 21px,calc(100% - 14px) 21px;background-size:6px 6px,6px 6px;background-repeat:no-repeat}
@@ -86,11 +88,11 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .pl{font-weight:700;margin-top:-2px}
 .pl.pos{color:var(--green)}.pl.neg{color:var(--red)}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-.chip{min-height:36px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4d55;background:#141518;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
+.chip{min-height:44px;padding:4px 12px;border-radius:18px;border:1.5px solid #4a4d55;background:#141518;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
 .chip[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
 .empty{color:var(--mute);text-align:center;padding:14px 0 6px;margin:0}
 .note{font-size:.76rem;color:var(--mute)}
-.disclaimer{font-size:.72rem;color:var(--mute);text-align:center;margin:4px 8px 0}
+.disclaimer{font-size:.68rem;letter-spacing:.4px;color:var(--mute);text-align:center;margin:4px 8px 0}
 .selbtn{display:block;width:100%;text-align:left;min-height:56px;color:#fff;background-color:#26282d;background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%),linear-gradient(180deg,#363940,#26282d);background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%,0 0;background-size:6px 6px,6px 6px,100% 100%;background-repeat:no-repeat;border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:8px 40px 8px 14px;font:inherit;cursor:pointer;box-shadow:inset 0 2px 5px rgba(0,0,0,.4)}
 .selbtn:focus-visible{outline:none;border-color:var(--gold);box-shadow:inset 0 2px 5px rgba(0,0,0,.4),0 0 0 3px rgba(212,175,55,.22)}
 .selbtn .sym{display:block;font-weight:600;line-height:1.3}
@@ -102,7 +104,7 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 .sheethead{display:flex;gap:8px;align-items:center}
 .sheethead input{background:#14151a;flex:1}
 .cats{display:flex;gap:8px;overflow-x:auto;padding:12px 0 10px;white-space:nowrap;-webkit-overflow-scrolling:touch}
-.cat{flex:0 0 auto;min-height:36px;padding:4px 14px;border-radius:18px;border:1.5px solid #34363c;background:#0b0c0e;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
+.cat{flex:0 0 auto;min-height:40px;padding:4px 14px;border-radius:18px;border:1.5px solid #34363c;background:#0b0c0e;color:var(--text);font:inherit;font-size:.82rem;cursor:pointer}
 .cat[aria-pressed="true"]{background:linear-gradient(180deg,#f7e08a,#D4AF37);border-color:var(--gold);color:#121212;font-weight:600}
 .sheetlist{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
 .irow{display:flex;align-items:center;border-bottom:1px solid #17181c}
@@ -118,7 +120,7 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 </head>
 <body>
 <main>
-<h1>Trade Calculator</h1>
+<h1>Pipframe</h1>
 <p class="sub">Size it, target it, measure it, then journal it.</p>
 
 <div class="tabs" id="tabs" role="tablist" aria-label="Calculator type">
@@ -203,6 +205,8 @@ button:focus-visible{outline:2px solid #fff;outline-offset:2px}
 <div class="grid" id="rGrid"></div>
 <div class="resnote" id="rNote"></div>
 <div class="logbox" id="logBox">
+<span class="lbl">Pre-Trade Emotion (optional)</span>
+<div class="chips" id="preChips"></div>
 <label for="rSes">Session (optional)</label>
 <select id="rSes"></select>
 <label for="rReason">Reason for trade (optional)</label>
@@ -283,7 +287,7 @@ var VIS={
 var ALLF=["f_dir","f_bal","f_riskmode","f_risk","f_lots","f_entry","f_exit","f_sl","f_tp","f_target","f_maxloss","f_comm","f_custom"];
 
 var $=function(i){return document.getElementById(i)};
-var tab="size",mode="pct",dirSide="buy",entries=[],memOnly=false,confirming=false,last=null,catSel="all",favs=[],FKEY="fx-calc-favs-v1";
+var tab="size",mode="pct",dirSide="buy",preMood=[],entries=[],memOnly=false,confirming=false,last=null,catSel="all",favs=[],FKEY="fx-calc-favs-v1";
 
 function h(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
 function load(){try{var r=localStorage.getItem(KEY);entries=r?JSON.parse(r):[];if(!Array.isArray(entries))entries=[]}catch(e){entries=[];memOnly=true}}
@@ -389,12 +393,25 @@ function chooseInst(code){
  $("inst").value=code;
  updateBtn();closeSheet();instChanged();
 }
+function indexHint(code){
+ var cur={JPN225:"yen",GER40:"euros",UK100:"pounds"}[code];
+ if(cur)return "1 point = 1 pip. Points on "+code+" are in "+cur+", not dollars. Put the dollar value of one point per lot in Contract size.";
+ return "1 point = 1 pip. Assumes $1 per point per lot. Change the contract size to match your broker.";
+}
+function buildPre(){
+ var box=$("preChips");box.innerHTML="";
+ MOODS.forEach(function(m){
+  var c=h("button","chip",m);c.type="button";c.setAttribute("aria-pressed",preMood.indexOf(m)>-1);
+  c.onclick=function(){var i=preMood.indexOf(m);if(i>-1)preMood.splice(i,1);else preMood.push(m);c.setAttribute("aria-pressed",preMood.indexOf(m)>-1)};
+  box.appendChild(c);
+ });
+}
 function instChanged(){
  var code=$("inst").value,s=SPEC[code];
  var t;
  if(code==="XAUUSD")t="1 pip = 0.10 price move. Assumes 100 oz per lot. Contract sizes can differ by broker.";
  else if(code==="BTCUSD")t="1 pip = 1 price move. Assumes 1 BTC per lot. Contract sizes can differ by broker.";
- else if(s.index)t="1 point = 1 pip. Assumes $1 per point per lot. Change the contract size to match your broker.";
+ else if(s.index)t=indexHint(code);
  else t="1 pip = "+s.pip+" price move. 1 lot = 100,000 units.";
  $("pipHint").textContent=t;
  $("contract").value=s.contract;
@@ -466,13 +483,12 @@ function calcSize(){
  var ud=s.unit==="BTC"?2:0;
  var rows=[
   ["Actual risk",usd(actual)],
-  ["Units ("+s.unit+")",n(lots*b.ct,ud)],
-  ["Mini lots",n(lots*10,1)],
-  ["Micro lots",n(lots*100,0)],
-  ["Pip value per lot",usd(pv)],
-  ["Direction",side.toUpperCase()],
-  ["Stop loss distance",n(sl,1)+" pips"]
+  ["Units"+(s.unit==="units"?"":" ("+s.unit+")"),n(lots*b.ct,ud)]
  ];
+ if(!s.index){rows.push(["Mini lots",n(lots*10,1)]);rows.push(["Micro lots",n(lots*100,0)])}
+ rows.push([s.index?"Point value per lot":"Pip value per lot",usd(pv)]);
+ rows.push(["Direction",side.toUpperCase()]);
+ rows.push(["Stop loss distance",n(sl,1)+" pips"]);
  if(hasTp){rows.push(["Take profit distance",n(tp,1)+" pips"]);rows.push(["Risk:Reward","1 : "+n(rr,2)]);rows.push(["Potential profit",usd(profit)])}
  var note="";
  if(Math.abs(target-actual)>=0.005){
@@ -560,8 +576,9 @@ function logTrade(){
  e.ts=Date.now();
  e.session=$("rSes").value;
  e.reason=$("rReason").value.trim();
- e.exit=null;e.mood=[];e.note="";
+ e.exit=null;e.mood=preMood.slice();e.note="";
  entries.unshift(e);save();render();
+ preMood=[];buildPre();
  var lb=$("logBtn");lb.disabled=true;lb.textContent="Logged \u2713 (see journal below)";
  $("rReason").value="";
 }
@@ -687,6 +704,7 @@ function render(){
  $("storeNote").textContent=memOnly?"Saving isn't available in this browser, so entries last only until you close the page.":"Saved on this device. Works offline. Use Export CSV to keep a backup.";
 }
 fillSessions($("rSes"),"");
+buildPre();
 ["size","pnl","amt","rrr"].forEach(function(k){$("t_"+k).onclick=function(){setTab(k)}});
 $("mPct").onclick=function(){setMode("pct")};
 $("mAmt").onclick=function(){setMode("amt")};
