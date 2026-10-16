@@ -1,7 +1,7 @@
 {
-  "name": "Position Size Calculator",
-  "short_name": "Lot Calc",
-  "description": "Forex, gold and BTC position size calculator with a trade journal.",
+  "name": "Pipframe",
+  "short_name": "Pipframe",
+  "description": "Position size, P&L and take profit calculator with a trade journal.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
